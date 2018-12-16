@@ -1,0 +1,13 @@
+﻿            ///html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[1]/input
+            ///html/body/form/table/tbody/tr/td[2]/main/table[2]/tbody/tr/td/table/tbody/tr[2]/td[1]/input
+            // document.evaluate('/html/body/div[4]/div[2]/div/div/div/div[3]/div/span[2]/span', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerHTML;
+            //currentQuestionPool.IndexOf(qid)
+            //body > form > table > tbody > tr > td:nth-child(2) > main > table > tbody > tr > td > table > tbody > tr:nth-child(2) > td:nth-child(1) > input[type="radio"]
+            ///html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[1]/input
+            ///
+            //     /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[1]/input  --- Selector
+            //     /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[2]/span   --- Text
+			       /html/body/form/table/tbody/tr/td[2]/main/table[2]/tbody/tr/td/table/tbody/tr[2]/td[2]/span
+
+
+				   /html/body/form/table/tbody/tr/td[2]/main/table[2]/tbody/tr/td/table/tbody/tr[2]/td[2]/span/text() --- two questions on page

@@ -442,7 +442,7 @@ D. The applicant must pass the current element 2 exam
 ~~ 
 
 
-G1E – Control categories; repeater regulations; harmful interference; third party rules; ITU regions; automatically controlled digital station
+G1E - Control categories; repeater regulations; harmful interference; third party rules; ITU regions; automatically controlled digital station
 
 
 G1E01 (A) [97.115(b)(2)]  
@@ -1046,10 +1046,10 @@ D. 850 Hz
 
 G2E07 (A)  
 What segment of the 80-meter band is most commonly used for digital transmissions?
-A. 3570 – 3600 kHz
-B. 3500 – 3525 kHz
-C. 3700 – 3750 kHz
-D. 3775 – 3825 kHz
+A. 3570 - 3600 kHz
+B. 3500 - 3525 kHz
+C. 3700 - 3750 kHz
+D. 3775 - 3825 kHz
 ~~
 
 
@@ -1501,7 +1501,7 @@ D. Double hop propagation near the LUF
 SUBELEMENT G4 - AMATEUR RADIO PRACTICES [5 Exam Questions - 5 groups]
 
 
-G4A – Station Operation and set up
+G4A - Station Operation and set up
 
 
 G4A01 (B) 
@@ -2099,7 +2099,7 @@ D. All of these choices are correct
 ~~
 
 
-SUBELEMENT G5 – ELECTRICAL PRINCIPLES [3 Exam Questions – 3 Groups] 
+SUBELEMENT G5 - ELECTRICAL PRINCIPLES [3 Exam Questions - 3 Groups] 
 
 
 G5A - Reactance; inductance; capacitance; impedance; impedance matching
@@ -2351,7 +2351,7 @@ D. 5000 watts
 ~~
 
 
-G5C – Resistors, capacitors, and inductors in series and parallel; transformers
+G5C - Resistors, capacitors, and inductors in series and parallel; transformers
 
 G5C01 (C)
 What causes a voltage to appear across the secondary winding of a transformer when an AC voltage source is connected across its primary winding?
@@ -2515,10 +2515,10 @@ D. 4.7 µF
 ~~
 
 
-SUBELEMENT G6 – CIRCUIT COMPONENTS [2 Exam Questions – 2 Groups]
+SUBELEMENT G6 - CIRCUIT COMPONENTS [2 Exam Questions - 2 Groups]
 
 
-G6A – Resistors; Capacitors; Inductors; Rectifiers; solid state diodes and transistors; vacuum tubes; batteries
+G6A - Resistors; Capacitors; Inductors; Rectifiers; solid state diodes and transistors; vacuum tubes; batteries
 
 G6A01 (C) 
 What is the minimum allowable discharge voltage for maximum life of a standard 12 volt lead acid battery?
@@ -2855,7 +2855,7 @@ D. A type of push-on connector intended for high voltage applications
 ~~
 
 
-G7 – PRACTICAL CIRCUITS [3 Exam Questions – 3 Groups]
+G7 - PRACTICAL CIRCUITS [3 Exam Questions - 3 Groups]
 
 
 G7A Power supplies; and schematic symbols
@@ -3205,7 +3205,7 @@ D. A computer model that can simulate performance of a radio to aid in the desig
 ~~
 
 
-SUBELEMENT G8 – SIGNALS AND EMISSIONS [3 Exam Questions – 3 Groups]
+SUBELEMENT G8 - SIGNALS AND EMISSIONS [3 Exam Questions - 3 Groups]
 
 
 G8A - Carriers and modulation: AM; FM; single sideband; modulation envelope; digital modulation; overmodulation 
@@ -3400,7 +3400,7 @@ D. Bandwidth is always half the symbol rate
 ~~
 
 
-G8C – Digital emission modes  
+G8C - Digital emission modes  
 
 G8C01 (B) 
 Which of the following digital modes is designed to operate at extremely low signal strength on the HF bands? 
@@ -3509,7 +3509,7 @@ D. Binary
 ~~
 
 
-SUBELEMENT G9 – ANTENNAS AND FEED LINES [4 Exam Questions – 4 Groups]
+SUBELEMENT G9 - ANTENNAS AND FEED LINES [4 Exam Questions - 4 Groups]
 
 G9A - Antenna feed lines: characteristic impedance, and attenuation; SWR calculation, measurement and effects; matching networks 
 
@@ -4041,7 +4041,7 @@ D. They have poor harmonic rejection
 ~~
 
 
-SUBELEMENT G0 – ELECTRICAL AND RF SAFETY [2 Exam Questions – 2 Groups]
+SUBELEMENT G0 - ELECTRICAL AND RF SAFETY [2 Exam Questions - 2 Groups]
 
 
 G0A - RF safety principles, rules and guidelines; routine station evaluation

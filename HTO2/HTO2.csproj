@@ -61,6 +61,7 @@
   <ItemGroup>
     <Content Include="ExtraPool.txt" />
     <Content Include="GeneralPool.txt" />
+    <Content Include="Misc Notes.txt" />
     <Content Include="TechPool.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
