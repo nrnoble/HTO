@@ -1,0 +1,181 @@
+﻿<main role="main">
+<input type="hidden" name="viewcoursesstudy" value="">
+<script type="text/javascript">
+function singleTopicSelected(e) {
+for ( ix = 0; ix < document.form1.viewcoursestoptopic.length; ix++ ) {
+document.form1.viewcoursestoptopic[ix].checked = false;
+}
+}
+function multiTopicSelected(e) {
+document.form1.viewcoursessingletopic.options[0].selected = true;
+}
+function selectNextSingleTopic(e) {
+ix = document.form1.viewcoursessingletopic.selectedIndex;
+if ( ix + 1 < document.form1.viewcoursessingletopic.options.length ) {
+document.form1.viewcoursessingletopic.selectedIndex = ix  + 1;
+} else {
+document.form1.viewcoursessingletopic.selectedIndex = 0;
+}
+}
+</script>
+<script src="/ckeditor_4.5.1_full/ckeditor.js"></script>
+<script>
+CKEDITOR.disableAutoInline = true;
+CKEDITOR.config.autoParagraph = false;
+CKEDITOR.config.allowedContent = null;
+CKEDITOR.config.extraAllowedContent = 'br span a meta script style marquee pre; table[background]; iframe object[*]; th tr[height,width]{height,width}; td{border}; *[onkeypress,onclick,onmouseover,onmouseout,onmousemove]; *(*)[id]; div[data-width,data-show-faces,data-send,data-href,data-font]; a[data-size,data-show-count]; marquee[*]{*}; pre[*]{*}; span[*]{*}';
+CKEDITOR.config.font_names = 'Arial/Arial, Helvetica, sans-serif; Calibri/Calibri, sans-serif; Comic Sans MS/Comic Sans MS, cursive; Courier New/Courier New, Courier, monospace; Georgia/Georgia, serif; Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif; Tahoma/Tahoma, Geneva, sans-serif; Times New Roman/Times New Roman, Times, serif; Trebuchet MS/Trebuchet MS, Helvetica, sans-serif; Verdana/Verdana, Geneva, sans-serif';
+CKEDITOR.config.stylesSet = 'testonline:/testonline_styles.js';
+CKEDITOR.config.disableNativeSpellChecker = false;
+CKEDITOR.dtd.$removeEmpty.span = 0;
+</script>
+<input type="hidden" name="viewcoursesfirsttime" value="true">
+<div class="viewCoursesForMe">
+<table>
+<tbody><tr>
+<td colspan="99">
+<h1 class="screenTitle">View courses</h1>
+</td>
+</tr>
+<tr>
+<td class="viewCoursesInput">
+<p class="viewCoursesInputHeader">Question pool</p>
+<div><input name="viewcoursestoptopic" type="radio" value="218" onchange="multiTopicSelected()">&nbsp;Technician</div>
+<div><input name="viewcoursestoptopic" type="radio" value="315" checked="" onchange="multiTopicSelected()"> General</div>
+<input name="viewcoursestoptopic" type="radio" value="416" onchange="multiTopicSelected()">&nbsp;Extra
+</td>
+<td class="viewCoursesInput" title="Course order = Logical learning order
+Question pool = Official pool order
+Stale = Least recently seen
+Low score = Weakest
+Stale &amp; low = Combo of stale and low score
+Repeat due = Intelligent repeat date" rowspan="2">
+<p class="viewCoursesInputHeader">Sort order</p>
+<div><input name="viewcoursessortorder" type="radio" value="Course" checked=""> Course order</div>
+<div><input name="viewcoursessortorder" type="radio" value="Question"> Question pool</div>
+<div><input name="viewcoursessortorder" type="radio" value="Stale"> Stale</div>
+<div><input name="viewcoursessortorder" type="radio" value="Low score"> Low score</div>
+<div><input name="viewcoursessortorder" type="radio" value="Stale and low"> Stale &amp; low</div>
+<div><input name="viewcoursessortorder" type="radio" value="Repeat due"> Repeat due</div>
+</td>
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Question selection</p>
+<div><span class="viewUnseen"><input name="viewcoursesincludeunseen" type="checkbox" value="ON" checked=""> Include unseen&nbsp;</span></div>
+<div><span class="viewWeak"><input name="viewcoursesincludeweak" type="checkbox" value="ON" checked=""> Include weak&nbsp;</span></div>
+<div><span class="viewReview"><input name="viewcoursesincludereview" type="checkbox" value="ON" checked=""> Include review&nbsp;</span></div>
+<div><span class="viewLearned"><input name="viewcoursesincludelearned" type="checkbox" value="ON" checked=""> Include learned&nbsp;</span></div>
+<div style="height: 15px;">&nbsp;</div>
+<div><span class="viewDue"><input name="viewcoursesincludealldue" type="checkbox" value="ON" checked=""> Due for repeat&nbsp;</span></div>
+<input name="viewcoursesaddinfotexts" type="hidden" value="ON" checked="">
+<input name="viewcoursesincludeinactiveinfotexts" type="hidden" value="ON" checked="">
+</td>
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Skipped questions</p>
+<div><input name="viewcoursesincludeskipped" type="radio" value="A" checked=""> All</div>
+<div><input name="viewcoursesincludeskipped" type="radio" value="N"> No skips</div>
+<div><input name="viewcoursesincludeskipped" type="radio" value="Y">&nbsp;Skips only</div>
+<div style="height: 15px;">&nbsp;</div>
+<div>&nbsp;</div>
+<div><a href="/faq.htm#ViewCourses"><strong>View Courses FAQ</strong></a></div>
+</td>
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Calculations</p>
+<div><input name="viewcoursesincludecalculations" type="radio" value="A" checked=""> All</div>
+<div><input name="viewcoursesincludecalculations" type="radio" value="N"> No calcs</div>
+<div><input name="viewcoursesincludecalculations" type="radio" value="Y">&nbsp;Calcs only</div>
+</td>
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Figures</p>
+<div><input name="viewcoursesincludefigures" type="radio" value="A" checked=""> All</div>
+<div><input name="viewcoursesincludefigures" type="radio" value="N"> No figures</div>
+<div><input name="viewcoursesincludefigures" type="radio" value="Y"> Figures only</div>
+</td>
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Display options</p>
+<div><input name="viewcoursesshowbackgroundcolors" type="checkbox" value="ON" checked=""> Background colors</div>
+<div><input name="viewcoursesshowquestionnumbers" type="checkbox" value="ON"> Show quest nbrs</div>
+<input name="viewcoursesshowquestiontexts" type="hidden" value="ON" checked="">
+<div><input name="viewcoursesshowcorrectanswers" type="checkbox" value="ON"> Show correct answers</div>
+<div><input name="viewcoursesshowdistractors" type="checkbox" value="ON"> Show distractors</div>
+</td>
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Lesson plans</p>
+<div>Split into&nbsp;<select name="viewcourseslessoncount">
+<option selected="">1
+</option><option>2
+</option><option>3
+</option><option>4
+</option><option>5
+</option><option>6
+</option><option>7
+</option><option>8
+</option><option>9
+</option><option>10
+</option><option>11
+</option><option>12
+</option><option>13
+</option><option>14
+</option><option>15
+</option><option>16
+</option><option>17
+</option><option>18
+</option><option>19
+</option><option>20
+</option><option>21
+</option><option>22
+</option><option>23
+</option><option>24
+</option><option>25
+</option><option>26
+</option><option>27
+</option><option>28
+</option><option>29
+</option><option>30
+</option><option>31
+</option><option>32
+</option><option>33
+</option><option>34
+</option><option>35
+</option><option>36
+</option><option>37
+</option><option>38
+</option><option>39
+</option><option>40
+</option><option>41
+</option><option>42
+</option><option>43
+</option><option>44
+</option><option>45
+</option><option>46
+</option><option>47
+</option><option>48
+</option><option>49
+</option><option>50
+</option></select> lessons</div>
+<div><input name="viewcoursesshownoninformationalquestions" type="checkbox" value="ON" checked=""> Show questions</div>
+</td>
+<td rowspan="2">
+<input name="viewcoursesoutputformat" type="hidden" value="viewItem" checked="">
+</td>
+<td style="width: 99%" rowspan="2">
+</td>
+</tr>
+<tr>
+<td class="viewCoursesInput" colspan="2">
+</td>
+</tr>
+<tr>
+<td class="viewCoursesInput" colspan="99">
+<input class="userHighlightButton" name="viewcoursesshowquestionsbutton" type="submit" value="Show questions">
+<span class="displayNone"><input class="userHighlightButton" name="viewcoursesshownexttopicbutton" type="submit" value="Show next topic questions"></span>
+</td></tr></tbody></table>
+</div>
+<input type="hidden" id="enterkeypressed" name="enterkeypressed" value="">
+<input type="hidden" name="windowwidth" value="1349">
+<input type="hidden" name="windowheight" value="664">
+<input type="hidden" name="responsetime" value="0">
+<input type="hidden" name="savedisplaymode" value="VIEW_COURSES">
+<input type="hidden" name="formcomplete" value="yes">
+<input type="hidden" name="iebugworkaround" value="iebugworkaround">
+
+</main>

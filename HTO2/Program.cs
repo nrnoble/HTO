@@ -16,7 +16,7 @@ namespace HTO2
 {
     class Program
     {
-
+        try
         const int SWP_NOZORDER = 0x4;
         const int SWP_NOACTIVATE = 0x10;
 
@@ -29,8 +29,15 @@ namespace HTO2
             int x, int y, int cx, int cy, int flags);
 
 
-        
 
+        enum PoolQuestions
+        {
+            Tech = 218,
+            General = 315,
+            Extra = 416
+        }
+
+        
         static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         static ChromeDriver driver = new ChromeDriver();
 
@@ -57,34 +64,59 @@ namespace HTO2
             Login(loginId, password);
 
 
+            OpenQA.Selenium.IWebElement viewCoursesButton = driver.FindElementByName("gotoviewcoursesbutton");
+            viewCoursesButton.Click();
 
+             selectQuestionPool(PoolQuestions.Tech).Click();
 
-            OpenQA.Selenium.IWebElement studyButton = driver.FindElementByName("studybutton");
-            studyButton.Click();
+            //OpenQA.Selenium.IWebElement studyButton = driver.FindElementByName("studybutton");
+            //studyButton.Click();
 
-            AnswerCurrentQuestion();
-            //System.Threading.Thread.Sleep(1000);
+            //AnswerCurrentQuestion();
+            ////System.Threading.Thread.Sleep(1000);
 
-            for (int i = 0; i <= 712; i++)
-            {
-                AnswerCurrentQuestion();
-                Console.WriteLine("Question Count: " + i + " Skip Count: " + skipcount);
-            }
-
-
-            
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
-            //AnswerCurrentQuestion();
+            //for (int i = 0; i <= 10000; i++)
+            //{
+            //    AnswerCurrentQuestion();
+            //    Console.WriteLine("Question Count: " + i + " Skip Count: " + skipcount);
+            //}
 
 
         }
+
+
+        static IWebElement selectQuestionPool(PoolQuestions value)
+        {
+
+            // 218 is tech
+            // 315 is general
+            // 416 is Extra
+
+            string str = value.ToString();
+
+            Console.WriteLine("");
+
+            try
+            {
+                var viewCourseButtons = driver.FindElements(By.Name("viewcoursestoptopic"));
+                foreach (var element in viewCourseButtons)
+                {
+                    //Console.WriteLine(element.GetAttribute("Value"));
+                    if (element.GetAttribute("Value") == value.ToString())
+                    {
+                        return element;
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(" Exception thrown in 'static IWebElement selectQuestionPool(string value)'");
+                return null;
+            }            
+        }
+
 
 
         static string getAnswerElementXpath(String answer)
@@ -268,7 +300,7 @@ namespace HTO2
 
             if (matches.Count == 0)
             {
-                MessageBox.Show("Unable to find a valid question on page");
+                return string.Empty;
             }
 
             var m1 = matches[0];
@@ -346,25 +378,38 @@ namespace HTO2
             Console.WriteLine(longQid);
 
             string qestionYear = getQuestionYear(longQid);
-            Console.WriteLine(qestionYear);
+            if (qestionYear == string.Empty)
+            {
+                Console.WriteLine("No valid year found. Exiting application");
+                Application.Exit();
+
+            }
+
+
+
 
 
             if (qestionYear == "2018")
             {
                 currentQuestionPool = techQuestions;
+                Console.WriteLine("Year: " + qestionYear + ". Setting to Tech pool questions");
             }
             else if (qestionYear == "2015")
             {
                 currentQuestionPool = GeneralQuestions;
+                Console.WriteLine("Year: " + qestionYear + ". Setting to General pool questions");
             }
             else if (qestionYear == "2016")
             {
                 currentQuestionPool = ExtraQuestions;
+                Console.WriteLine("Year: " + qestionYear + ". Setting to Extra pool questions");
+
 
             }
             else
             {
-                MessageBox.Show("The current year is invalid: " + qestionYear);
+                MessageBox.Show("The current year is invalid: " + qestionYear + ".  Exit app here." );
+                Application.Exit();
             }
 
 
@@ -387,6 +432,9 @@ namespace HTO2
             if (matches.Count == 0)
             {
                 MessageBox.Show("Match count is zero for finding '" + Qid + "' in the question pool");
+                Application.Exit();
+
+                //TODO: Search for OK box, and click it then restart answering question.
             }
 
             if (matches.Count == 1)

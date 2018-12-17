@@ -56,3 +56,54 @@ HTML/BODY/FORM/TABLE/TBODY/TR/TD/MAIN/TABLE/TBODY/TR/TD/TABLE/TBODY/TR/TD/SPAN -
 <span class="unfinishedIncorrectExplanation">
 <b> &nbsp;Incorrect.&nbsp; </b>
 </span>
+
+
+<input class="userMenuButton" name="gotoviewcoursesbutton" value="View courses" type="submit">
+
+<td class="viewCoursesInput">
+<p class="viewCoursesInputHeader">Question pool</p>
+<div><input name="viewcoursestoptopic" type="radio" value="218" onchange="multiTopicSelected()">&nbsp;Technician</div>
+<div><input name="viewcoursestoptopic" type="radio" value="315" checked="" onchange="multiTopicSelected()"> General</div>
+     <input name="viewcoursestoptopic" type="radio" value="416" onchange="multiTopicSelected()">&nbsp;Extra
+</td>
+
+
+<td class="viewCoursesInput" title="Course order = Logical learning order
+Question pool = Official pool order
+Stale = Least recently seen
+Low score = Weakest
+Stale &amp; low = Combo of stale and low score
+Repeat due = Intelligent repeat date" rowspan="2">
+<p class="viewCoursesInputHeader">Sort order</p>
+<div><input name="viewcoursessortorder" type="radio" value="Course" checked=""> Course order</div>
+<div><input name="viewcoursessortorder" type="radio" value="Question"> Question pool</div>
+<div><input name="viewcoursessortorder" type="radio" value="Stale"> Stale</div>
+<div><input name="viewcoursessortorder" type="radio" value="Low score"> Low score</div>
+<div><input name="viewcoursessortorder" type="radio" value="Stale and low"> Stale &amp; low</div>
+<div><input name="viewcoursessortorder" type="radio" value="Repeat due"> Repeat due</div>
+</td>
+
+
+
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Question selection</p>
+<div><span class="viewUnseen"><input name="viewcoursesincludeunseen" type="checkbox" value="ON" checked=""> Include unseen&nbsp;</span></div>
+<div><span class="viewWeak"><input name="viewcoursesincludeweak" type="checkbox" value="ON" checked=""> Include weak&nbsp;</span></div>
+<div><span class="viewReview"><input name="viewcoursesincludereview" type="checkbox" value="ON" checked=""> Include review&nbsp;</span></div>
+<div><span class="viewLearned"><input name="viewcoursesincludelearned" type="checkbox" value="ON" checked=""> Include learned&nbsp;</span></div>
+<div style="height: 15px;">&nbsp;</div>
+<div><span class="viewDue"><input name="viewcoursesincludealldue" type="checkbox" value="ON" checked=""> Due for repeat&nbsp;</span></div>
+<input name="viewcoursesaddinfotexts" type="hidden" value="ON" checked="">
+<input name="viewcoursesincludeinactiveinfotexts" type="hidden" value="ON" checked="">
+</td>
+
+
+<td class="viewCoursesInput" rowspan="2">
+<p class="viewCoursesInputHeader">Skipped questions</p>
+<div><input name="viewcoursesincludeskipped" type="radio" value="A" checked=""> All</div>
+<div><input name="viewcoursesincludeskipped" type="radio" value="N"> No skips</div>
+<div><input name="viewcoursesincludeskipped" type="radio" value="Y">&nbsp;Skips only</div>
+<div style="height: 15px;">&nbsp;</div>
+<div>&nbsp;</div>
+<div><a href="/faq.htm#ViewCourses"><strong>View Courses FAQ</strong></a></div>
+</td>

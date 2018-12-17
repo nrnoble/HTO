@@ -63,6 +63,7 @@
     <Content Include="GeneralPool.txt" />
     <Content Include="Misc Notes.txt" />
     <Content Include="TechPool.txt" />
+    <Content Include="Misc Notes-2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
