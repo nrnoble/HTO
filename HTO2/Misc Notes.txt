@@ -11,3 +11,48 @@
 
 
 				   /html/body/form/table/tbody/tr/td[2]/main/table[2]/tbody/tr/td/table/tbody/tr[2]/td[2]/span/text() --- two questions on page
+
+
+
+
+				   // /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/
+				   // /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[1]/input
+
+				   // 0.34650712177120235-1
+				       0.9146847530745974-1
+
+
+<input type="radio" name="choice" value="0" onclick="JavaScript:
+stopTimer();
+document.form1.submit();">
+
+
+
+HTML/BODY/FORM/TABLE/TBODY/TR/TD/MAIN/TABLE/TBODY/TR/TD/TABLE/TBODY/TR/TD/SPAN -- answerID
+/html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[2]/span
+
+
+
+           //// var element = driver.FindElementByXPath("/html/body/form/table/tbody/tr/td/.");
+           // var element2 = driver.FindElements(By.XPath("//*[contains(text(), 'CW')]"));
+           //// var element3 = driver.FindElement(By.XPath("descendant::span/."));
+           // var element4 = driver.FindElement(By.XPath("//*[contains(text(), 'CW')]"));
+           // var xpath = getXPath(element4);
+           // Console.WriteLine(xpath);
+           // // if (driver.FindElement(By.XPath("/html/body/form/table/tbody/tr/td/.")).Size.IsEmpty != true)
+           // if (driver.FindElement(By.XPath("//*[contains(text(), 'CW')]")).Size.IsEmpty != true)
+           // {
+           //     Console.WriteLine("Element is Present");
+           // }
+           // else
+           // {
+           //     Console.WriteLine("Element is Absent");
+           // }
+            
+           //var elements = driver.FindElementsByClassName("unselectedAnswer");
+           //var element5 = driver.FindElements(By.XPath("//span[contains(text(), 'CW') and contains(@class, 'unselectedAnswer')] "));
+
+
+<span class="unfinishedIncorrectExplanation">
+<b> &nbsp;Incorrect.&nbsp; </b>
+</span>

@@ -10,14 +10,33 @@ using OpenQA.Selenium.Support.UI;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace HTO2
 {
     class Program
     {
 
+        const int SWP_NOZORDER = 0x4;
+        const int SWP_NOACTIVATE = 0x10;
+
+        [DllImport("kernel32")]
+        static extern IntPtr GetConsoleWindow();
+
+
+        [DllImport("user32")]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
+            int x, int y, int cx, int cy, int flags);
+
+
+        
+
         static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         static ChromeDriver driver = new ChromeDriver();
+
+        static int skipcount = 0;
+        static int count = 0;
+
 
         static string currentQuestionPool = string.Empty;
         static string techQuestions = File.ReadAllText(@".\TechPool.txt");
@@ -26,6 +45,8 @@ namespace HTO2
 
         static void Main(string[] args)
         {
+
+          
             var loginId = "nrnoble@hotmail.com";
             var password = "J$p1ter2";
 
@@ -36,18 +57,34 @@ namespace HTO2
             Login(loginId, password);
 
 
+
+
             OpenQA.Selenium.IWebElement studyButton = driver.FindElementByName("studybutton");
             studyButton.Click();
 
+            AnswerCurrentQuestion();
+            //System.Threading.Thread.Sleep(1000);
 
-            AnswerCurrentQuestion();
-            System.Threading.Thread.Sleep(3000);
-            AnswerCurrentQuestion();
+            for (int i = 0; i <= 712; i++)
+            {
+                AnswerCurrentQuestion();
+                Console.WriteLine("Question Count: " + i + " Skip Count: " + skipcount);
+            }
+
+
+            
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
+            //AnswerCurrentQuestion();
 
 
         }
-
-
 
 
         static string getAnswerElementXpath(String answer)
@@ -67,29 +104,31 @@ namespace HTO2
 
         }
 
+
+        //should not be required
         static string getBaseXpath()
         {
             // /td/table/tbody
                                        // /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/
-            string firstQuestionXpath = @"/html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td";
-            string addionalQuestionsXpath = @"/html/body/form/table/tbody/tr/td[2]/main/table[2]/tbody/tr/td";
+            string firstQuestionXpath = @"/html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/";
+            string addionalQuestionsXpath = @"/html/body/form/table/tbody/tr/td[2]/main/table[2]/tbody/tr/td/";
             //string baseXpath = firstQuestionXpath;
 
 
-            if (doesXpathExist(addionalQuestionsXpath) == true)
+            if (doesXpathExist("/html/body/form/table/tbody/") == true)
             {
-                return addionalQuestionsXpath + "/";
+               // return addionalQuestionsXpath + "/";
+                return addionalQuestionsXpath;
             }
             else if (doesXpathExist(firstQuestionXpath) == true)
             {
-                return firstQuestionXpath + "/";
+                //return firstQuestionXpath + "/";
+                return firstQuestionXpath;
             }
             return string.Empty;
         }
 
-
-
-
+        //should not be required
         static string getBaseXpath1()
         {
                                            // /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td
@@ -109,10 +148,40 @@ namespace HTO2
             return string.Empty;
         }
 
-
+        //should not be required
         static bool doesXpathExist(string xPath)
         {
+
+            string pageHTML = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
+
+            var escapedXpath = Regex.Escape(xPath);
+
+           Match  matchResults = Regex.Match(pageHTML, escapedXpath);
+
+
+            var element = driver.FindElementByXPath(xPath);
+
+            if (matchResults.Success == true)
+            {
+                Console.WriteLine(xPath + " Element is Present");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(xPath + "Element is Absent");
+                return false;
+            }
+            
+
+        }
+
+
+        //should not be required
+        static bool doesXpathExist1(string xPath)
+        {
             IWebElement element = null;
+            var size = element.Size;
+                 
             bool pathExists = false;
             try
             {
@@ -134,23 +203,54 @@ namespace HTO2
         }
 
 
+        static IWebElement getAnswerElement(string answer)
+        {
+            System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> answerTextElement = null ;
+            try
+            {
+                 answerTextElement = driver.FindElements(By.XPath("//span[contains(text(), '" + answer + "') and contains(@class, 'unselectedAnswer')] "));
+            }
+            catch (Exception)
+            {
+                return null;
+            }
 
+            foreach (var element in answerTextElement)
+            {
+                if (element.Text.Trim() == answer.Trim())
+                {
+                    return element;
+                }
+            }
+            return null; 
+    
+        }
+
+
+
+        // nolonger needed
         static string getAnswerElement(int tr, string answer)
         {
 
 
-            string baseXpath = getBaseXpath();
+            // string baseXpath = getBaseXpath();
             //                     
-            //                     /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/ -- base path
-            //                     /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/td/table/tbody/tr[2]/td[2]/span
-            //                     /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[2]/span
-            //                     /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/
-            //string baseXpath = @"/html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/";
-            string trPath = @"table/tbody/tr[" + tr + "]/td[2]/span";
-            string fullXpath = baseXpath + trPath;
+            //                      /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/ -- base path
+            //                      /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/td/table/tbody/tr[2]/td[2]/span
+            //                      /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/tr[2]/td[2]/span
+            //                      /html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/
+            // string baseXpath = @"/html/body/form/table/tbody/tr/td[2]/main/table/tbody/tr/td/table/tbody/";
 
-            IWebElement answerTextElement = driver.FindElementByXPath(fullXpath);
-            if (answerTextElement.Text == answer)
+            // string trPath = @"table/tbody/tr[" + tr + "]/td[2]/span";
+            // string fullXpath = baseXpath + trPath;
+
+            // var element5 = driver.FindElements(By.XPath("//span[contains(text(), 'CW') and contains(@class, 'unselectedAnswer')] "));
+            var answerTextElement = driver.FindElements(By.XPath("//span[contains(text(), '" + answer + "') and contains(@class, 'unselectedAnswer')] "));
+            answerTextElement[0].Click();
+
+            string fullXpath = getXPath(answerTextElement[0]);
+
+            if (answerTextElement[0].Text.Trim() == answer.Trim())
             {
                 return fullXpath;
             }
@@ -170,6 +270,7 @@ namespace HTO2
             {
                 MessageBox.Show("Unable to find a valid question on page");
             }
+
             var m1 = matches[0];
             match1 = m1.Value;
             QID = match1;
@@ -177,7 +278,7 @@ namespace HTO2
             if (matches.Count > 1)
             {
                 var m2 = matches[1];
-                match2 = m1.Value;
+                match2 = m2.Value;
                 QID = match2;
             }
             QID = QID.Replace('[',' ');
@@ -314,16 +415,19 @@ namespace HTO2
             string answerLine = Regex.Match(questionFullText, answerLetter + @"\.(.+)").Groups[1].Value.Trim();
             Console.WriteLine("Answer: " + answerLine);
 
-            var xPathtoAnswerText = getAnswerElementXpath(answerLine);
-            Console.WriteLine("xPathtoAnswerText: " + xPathtoAnswerText);
-            if (xPathtoAnswerText == string.Empty)
+            // var xPathtoAnswerText = getAnswerElementXpath(answerLine);
+            // Console.WriteLine("xPathtoAnswerText: " + xPathtoAnswerText);
+
+            var answerElement = getAnswerElement(answerLine);
+            if (answerElement != null)
             {
-                ClickOnSkipButton();
+                answerElement.Click();
             }
             else
             {
-                var answerTextElement = driver.FindElementByXPath(xPathtoAnswerText);
-                answerTextElement.Click();
+                Console.WriteLine("Skipping question: " + Qid);
+                skipcount++;
+                ClickOnSkipButton();
             }
         }
 
@@ -372,6 +476,52 @@ namespace HTO2
             {
                 driver.FindElementByXPath(fullXpath).Click();
             }
+        }
+
+
+        /// <summary>
+        /// Sets the console window location and size in pixels
+        /// </summary>
+        public static void SetWindowPosition(int x, int y, int width, int height)
+        {
+            Console.WindowWidth = 132;
+            Console.WindowHeight = 35;
+            Console.BufferWidth = 134;
+            Console.BufferHeight = 300;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.WriteLine("Console bufferHeight: " + Console.BufferHeight);
+            Console.WriteLine("Console bufferHeight: " + Console.BufferWidth);
+            Console.SetWindowPosition(1,2);
+
+          //  var screen = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+          //  var width = screen.Width;
+          //  var height = screen.Height;
+          //  SetWindowPos(Handle, IntPtr.Zero, x, y, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
+        }
+
+        public static IntPtr Handle
+        {
+            get
+            {
+                //Initialize();
+                return GetConsoleWindow();
+            }
+        }
+
+ 
+        static String getXPath(IWebElement element)
+        {
+            String jscript = "function getPathTo(node) {" +
+                "  var stack = [];" +
+                "  while(node.parentNode !== null) {" +
+                "    stack.unshift(node.tagName);" +
+                "    node = node.parentNode;" +
+                "  }" +
+                "  return stack.join('/');" +
+                "}" +
+                "return getPathTo(arguments[0]);";
+            return (String)driver.ExecuteScript(jscript, element);
         }
 
 
