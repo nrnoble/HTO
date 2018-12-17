@@ -16,7 +16,7 @@ namespace HTO2
 {
     class Program
     {
-        try
+      
         const int SWP_NOZORDER = 0x4;
         const int SWP_NOACTIVATE = 0x10;
 
