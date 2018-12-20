@@ -107,3 +107,72 @@ Repeat due = Intelligent repeat date" rowspan="2">
 <div>&nbsp;</div>
 <div><a href="/faq.htm#ViewCourses"><strong>View Courses FAQ</strong></a></div>
 </td>
+
+<input class="userHighlightButton" name="viewcoursesshowquestionsbutton" type="submit" value="Show questions">
+
+<input class="userHighlightButton" name="viewcoursesdrillallquestionsbutton" type="button" value="Drill these questions" onclick="document.form1.viewcoursesstudy.value = 'all';document.form1.submit();">
+
+<tbody><tr><td>&nbsp;</td></tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="menubutton" value="Main menu" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="choosetopicsbutton" value="Choose topics" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="studybutton" value="Study" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="gotoviewcoursesbutton" value="View courses" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="practiceexambutton" value="Practice exam" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="edituseroptions864561" value="My options" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="editaccountbutton" value="My account" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="oldpurchasebutton" value="Purchase" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="viewuserlistbutton" value="Top scores" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="gotoviewstudyhistorybutton" value="Study history" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBar">
+<input class="userMenuButton" name="logoutbutton" value="Logout" type="submit">
+</td>
+</tr>
+<tr>
+<td align="center" class="buttonBarUserRank">
+User rank:
+<br>
+3
+</td>
+</tr>
+</tbody>

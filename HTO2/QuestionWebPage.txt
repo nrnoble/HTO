@@ -1,0 +1,364 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src='/testOnline.js'></script>
+<link rel=StyleSheet href="/style.css" type="text/css">
+<link rel=StyleSheet href="style_20180530.css" type="text/css">
+<link rel=StyleSheet href="/style_custom.css" type="text/css">
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Cache-Control" content="public">
+<meta name="description" content="Online courses for the ham radio license exams.">
+<meta name="keywords" content="ham radio, ham radio exam, ham radio course, ham radio license class, amateur radio, amateur radio license class, amateur radio exam, question pool, practice exam">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$'+'$','$'+'$'], ['\\(','\\)']],
+displayMath: [['$'+'$'+'$','$'+'$'+'$'],['\\[','\\]']],
+processEnvironments: false},
+"HTML-CSS": {
+scale: 100,
+minScaleAdjust: 120,
+matchFontHeight: true
+}
+});
+</script><script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><script src="https://apis.google.com/js/plusone.js" type="text/javascript"></script><script>(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:"5152304"};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","//bat.bing.com/bat.js","uetq");</script>
+<title>HamTestOnline</title>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1415019-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www')
++ '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</head>
+<body onLoad="initializeForm();" onKeyPress="checkForEnterKey(event);">
+<header role="banner">
+<table width='100%'>
+<tr>
+<td align='center' width='50%'>
+<a href='/'><img alt="Online courses for the ham radio license exams." src="/images/ham-test-online-logo.png" style="height:60px" /></a>
+<a href='/bannerClick.jsp?bacid=B23-1&userid=864561&randomXX=82' target='_click' rel='nofollow'><img src="/images/ads/join_ARRL.gif" border="0" alt="ARRL - the national association for amateur radio"></a>
+</td>
+</tr>
+</table>
+</header>
+<form name='form1' method='post'
+action='https://www.hamradiolicenseexam.com/study.jsp'
+onSubmit='JavaScript: stopTimer();'>
+<input type='hidden' name='previousJcTaskId' value="l2i9aKM1Z4yxiDu4Javu">
+<input type='hidden' name='processingform' value='yes'>
+<table align='center' width="100%" border='0' cellspacing='0' cellpadding='1'>
+<tr>
+<td class='buttonBar'>
+<nav role="navigation">
+<table align='center' width='5%' border='0' cellspacing='0' cellpadding='1'>
+<tr>
+<td>
+<table align='center' border="0" cellpadding="2" cellspacing="0">
+<tr><td>&nbsp;</td></tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='menubutton'
+value='Main menu'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='choosetopicsbutton'
+value='Choose topics'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='studybutton'
+value='Study'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='gotoviewcoursesbutton'
+value='View courses'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='practiceexambutton'
+value='Practice exam'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='edituseroptions864561'
+value='My options'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='editaccountbutton'
+value='My account'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='oldpurchasebutton'
+value='Purchase'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='viewuserlistbutton'
+value='Top scores'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='gotoviewstudyhistorybutton'
+value='Study history'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBar'>
+<input class='userMenuButton'
+name='logoutbutton'
+value='Logout'
+type='submit'
+>
+</td>
+</tr>
+<tr>
+<td align='center' class='buttonBarUserRank'>
+User rank:
+<br>
+2
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</nav>
+</td>
+<td valign="top">
+<main role="main">
+<table class='finishedCorrectQuestion_outer borderwidth2 finishedCorrectQuestion_inner questionAnswerFont'
+cellspacing='0' cellpadding='5'>
+<tr>
+<td>
+<span class='dimStuff'>Previous question (too soon):</span>
+<table class='finishedCorrectQuestion_outer borderwidth0 finishedCorrectQuestion_inner'
+cellspacing='0' cellpadding='12'>
+<tr>
+<td colspan="2">
+What standing wave ratio will result when connecting a 50 ohm feed line to an antenna that has a purely resistive 300 ohm feed point impedance?
+<span class='dimStuff'>
+[2015-G9A13]
+</span>
+</td>
+</tr>
+<tr>
+<td class='finishedCorrectAnswer'
+>
+<span class="finishedCorrectAnswer">
+6:1
+</span>
+<span class="finishedCorrectExplanation">
+<b> &nbsp;Correct!&nbsp; </b>
+</span>
+</td>
+</tr>
+</table>
+<br />
+<input type='submit' class='userHighlightButton'
+name="showhint_1545219821539_1"
+value="SWR"> &nbsp;
+<input type='submit' class='userHighlightButton'
+name="showhint_1545219821539_2"
+value="Show formula"> &nbsp;
+<input type='submit' class='userHighlightButton'
+name="showhint_1545219821539_3"
+value="Show calculation"> &nbsp;
+</td>
+</tr>
+</table>
+<font size='-9'><br /></font>
+<table class='unfinishedUnansweredQuestion_outer borderwidth2 unfinishedUnansweredQuestion_inner questionAnswerFont'
+cellspacing='0' cellpadding='5'>
+<tr>
+<td>
+<p class="topicScoreBar">
+General Exam (element 3)<font color='#404040'>[100%]</font> : Amateur Radio Practices<font color='#404040'>[100%]</font>
+</p>
+<table class='unfinishedUnansweredQuestion_outer borderwidth0 unfinishedUnansweredQuestion_inner'
+cellspacing='0' cellpadding='12'>
+<tr>
+<td colspan="2">
+What could be a symptom of a ground loop somewhere in your station?
+<span class='dimStuff'>
+[2015-G4C10]
+</span>
+</td>
+</tr>
+<tr>
+<td align="center" width="1%">
+<input type="radio" name="choice" value="0"
+onClick="JavaScript:
+stopTimer();
+document.form1.submit();"
+>
+</td>
+<td class='unselectedAnswer'
+onMouseOver="this.className = 'selectedAnswer'"
+onMouseOut="this.className = 'unselectedAnswer'"
+onClick="JavaScript:
+document.form1.choice[0].checked=true;
+stopTimer();
+document.form1.submit();"
+>
+<span class="unselectedAnswer">
+You receive reports of harmonic interference from your station
+</span>
+</td>
+</tr>
+<tr>
+<td align="center" width="1%">
+<input type="radio" name="choice" value="1"
+onClick="JavaScript:
+stopTimer();
+document.form1.submit();"
+>
+</td>
+<td class='unselectedAnswer'
+onMouseOver="this.className = 'selectedAnswer'"
+onMouseOut="this.className = 'unselectedAnswer'"
+onClick="JavaScript:
+document.form1.choice[1].checked=true;
+stopTimer();
+document.form1.submit();"
+>
+<span class="unselectedAnswer">
+An item of station equipment starts to draw excessive amounts of current
+</span>
+</td>
+</tr>
+<tr>
+<td align="center" width="1%">
+<input type="radio" name="choice" value="2"
+onClick="JavaScript:
+stopTimer();
+document.form1.submit();"
+>
+</td>
+<td class='unselectedAnswer'
+onMouseOver="this.className = 'selectedAnswer'"
+onMouseOut="this.className = 'unselectedAnswer'"
+onClick="JavaScript:
+document.form1.choice[2].checked=true;
+stopTimer();
+document.form1.submit();"
+>
+<span class="unselectedAnswer">
+The SWR reading for one or more antennas is suddenly very high
+</span>
+</td>
+</tr>
+<tr>
+<td align="center" width="1%">
+<input type="radio" name="choice" value="3"
+onClick="JavaScript:
+stopTimer();
+document.form1.submit();"
+>
+</td>
+<td class='unselectedAnswer'
+onMouseOver="this.className = 'selectedAnswer'"
+onMouseOut="this.className = 'unselectedAnswer'"
+onClick="JavaScript:
+document.form1.choice[3].checked=true;
+stopTimer();
+document.form1.submit();"
+>
+<span class="unselectedAnswer">
+You receive reports of "hum" on your station's transmitted signal
+</span>
+</td>
+</tr>
+</table>
+<br />
+<input type='submit' class='userButton'
+name="fiftyfiftybutton"
+value="50/50"> &nbsp;
+<input type='submit' class='userButton'
+name="showanswerbutton"
+value="Show answer"> &nbsp;
+<input type='submit' class='userButton'
+name="skipquestionbutton"
+value="Skip question for now"> &nbsp;
+<input type='submit' class='userButton'
+name="skipsabutton"
+value="Skip subject for now"> &nbsp;
+<input type='submit' class='userHighlightButton'
+name="showhint_1545219822074_1"
+value="Ground"> &nbsp;
+</td>
+</tr>
+</table>
+<font size='-9'><br /></font>
+<input type='hidden' id='enterkeypressed' name="enterkeypressed" value="">
+<input type='hidden' name="windowwidth" value="">
+<input type='hidden' name="windowheight" value="">
+<input type='hidden' name='responsetime' value="0">
+<input type='hidden' name='savedisplaymode' value="STUDY_VIEW_COURSES">
+<input type='hidden' name='formcomplete' value="yes">
+<input type='hidden' name='iebugworkaround' value="iebugworkaround">
+</form>
+</main>
+</td>
+</tr>
+</table>
+<blockquote class="textAlignCenter"><a href="/">Home</a> &nbsp; &nbsp; <a href="/what-is-ham-radio.htm">What is ham radio?</a> &nbsp; &nbsp; <a href="/which-exam.htm">Which exam to take?</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="/study-tips.htm">Study&nbsp;tips</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="/where-to-take-amateur-radio-exam.htm">Where&nbsp;to&nbsp;take&nbsp;the&nbsp;exam?</a> &nbsp; &nbsp; <a href="/faq.htm">Frequency&nbsp;Asked&nbsp;Questions (FAQ)</a> &nbsp; &nbsp; <a href="/how_to.htm">How&nbsp;to</a> &nbsp; &nbsp; <a href="/how-much-math-is-on-the-amateur-radio-exams.htm">How&nbsp;much&nbsp;math?</a> &nbsp; &nbsp; <a href="/trouble-with-practice-exams.htm">Trouble&nbsp;with&nbsp;practice&nbsp;exams</a> &nbsp; &nbsp; <a href="/feedback.htm">Feedback</a> &nbsp; &nbsp; <a href="/prices.htm">Prices</a> &nbsp; &nbsp; <a href="/ham-it-forward.htm"><span class="htoFont"><span class="htoRed">Ham</span> <span class="htoBlue">It</span> <span class="htoGreen">Forward<span class="notBold">&trade;</span></span></span></a> &nbsp; &nbsp; <a href="/free-extra-course-for-active-volunteer-examiners.htm">Free&nbsp;Extra&nbsp;course&nbsp;for&nbsp;active&nbsp;volunteer&nbsp;examiners</a> &nbsp; &nbsp; <a href="/refundPolicy.htm">Refund&nbsp;policy</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="/privacy-policy.htm">Privacy&nbsp;policy</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/termsAndConditions.htm">Terms&nbsp;and&nbsp;conditions</a> &nbsp; &nbsp; <a href="/bumper.htm">Bumper&nbsp;sticker</a> &nbsp; &nbsp; <a href="/advertise.htm">Advertise&nbsp;with&nbsp;us</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="/hamband.htm">The&nbsp;Ham&nbsp;band</a> &nbsp; &nbsp; <a href="/rate.htm">Rate us</a> &nbsp; &nbsp; <a href="/ham-radio-course-structure.htm">Course&nbsp;structure</a>&nbsp;&nbsp;&nbsp;&nbsp; <a href="/ham-radio-for-survivalists.htm">Survivalists</a> &nbsp; &nbsp; <a href="/documents.htm">Documents</a> &nbsp; &nbsp; <a href="/facebook.htm">facebook</a> &nbsp; &nbsp; <a href="https://plus.google.com/107572333157589960568" rel="publisher" target="_Google">Google+</a> &nbsp; &nbsp; <a href="/contact.htm">Contact&nbsp;us</a> &nbsp; &nbsp; <a href="/christina-extra-class-ham-license-story.htm">Christina's&nbsp;story</a> &nbsp; &nbsp; <a href="/testOnlineFamily.htm"><span style="font-family:verdana"><em><strong><span style="color:#0000cc">Test</span><span style="color:#006600">Online</span></strong></em><span style="color:#006600">&trade;</span></span></a> &nbsp; &nbsp; <a href="/links.htm">Links</a></blockquote>
+<p class="missionStatement textAlignCenter">The best study method, customer support, and guarantee in the industry!</p>
+<p class="copyrightText textAlignCenter">A <span style="font-family:verdana"><em><strong><span style="color:#0000cc">Test</span><span style="color:#006600">Online</span></strong></em><span style="color:#006600">&trade;</span></span> website.&nbsp; Copyright &copy; 1998-<script>document.write(new Date().getFullYear())</script>, HamTestOnline&trade;.&nbsp; All rights reserved.</p>
+<script type="text/javascript">
+(function() {
+var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+po.src = 'https://apis.google.com/js/plusone.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+})();
+</script>
+</body>
+</html>

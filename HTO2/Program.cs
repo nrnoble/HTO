@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.CodeDom.Compiler;
+using System.CodeDom;
 
 namespace HTO2
 {
@@ -28,7 +30,8 @@ namespace HTO2
         static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
             int x, int y, int cx, int cy, int flags);
 
-
+        //It will change depending on the resistor's temperature coefficient
+        //It will change depending on the resistor's temperature coefficient
 
         enum PoolQuestions
         {
@@ -37,13 +40,38 @@ namespace HTO2
             Extra = 416
         }
 
-        
+
+        enum SortOrder
+        {
+            CourseOrder = 1,
+            QuestionPool =2,
+            Stale = 3,
+            LowScore = 4,
+            StaleLow = 5,
+            RepeatDue = 6
+        }
+
+        enum questionSelection
+        {
+            IncludeUnseen = 1,
+            IncludeWeak = 2,
+            IncludeReview = 3,
+            Includelearned = 4
+        }
+
+        enum SkippedQuestions   
+        {
+            All = 1,
+            NoSkips = 2,
+            SkipsOny = 3
+        }
+
+
         static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         static ChromeDriver driver = new ChromeDriver();
 
         static int skipcount = 0;
-        static int count = 0;
-
+ 
 
         static string currentQuestionPool = string.Empty;
         static string techQuestions = File.ReadAllText(@".\TechPool.txt");
@@ -53,7 +81,8 @@ namespace HTO2
         static void Main(string[] args)
         {
 
-          
+        
+
             var loginId = "nrnoble@hotmail.com";
             var password = "J$p1ter2";
 
@@ -63,11 +92,21 @@ namespace HTO2
             driver.Navigate().GoToUrl("https://www.hamradiolicenseexam.com/login.htm");
             Login(loginId, password);
 
+            ReveiwPageTest();
 
-            OpenQA.Selenium.IWebElement viewCoursesButton = driver.FindElementByName("gotoviewcoursesbutton");
-            viewCoursesButton.Click();
+            //OpenQA.Selenium.IWebElement viewCoursesButton = driver.FindElementByName("gotoviewcoursesbutton");
+            //viewCoursesButton.Click();
 
-             selectQuestionPool(PoolQuestions.Tech).Click();
+            //selectQuestionPool(PoolQuestionsEnum.Extra).Click();
+            //selectSortOrder(SortOrderEnum.Stale).Click();
+            //selectSkippedQuestions(SkippedQuestionsEnum.NoSkips).Click();
+
+            //OpenQA.Selenium.IWebElement showQuestionButton = driver.FindElementByName("viewcoursesshowquestionsbutton");
+            //showQuestionButton.Click();
+
+            //OpenQA.Selenium.IWebElement drillQuestionButton = driver.FindElementByName("viewcoursesdrillallquestionsbutton");
+            //drillQuestionButton.Click();
+
 
             //OpenQA.Selenium.IWebElement studyButton = driver.FindElementByName("studybutton");
             //studyButton.Click();
@@ -75,34 +114,139 @@ namespace HTO2
             //AnswerCurrentQuestion();
             ////System.Threading.Thread.Sleep(1000);
 
-            //for (int i = 0; i <= 10000; i++)
-            //{
-            //    AnswerCurrentQuestion();
-            //    Console.WriteLine("Question Count: " + i + " Skip Count: " + skipcount);
-            //}
+            int TotalTount = 0;
+            for (int x = 0; x < 100; x++)
+            {
+                for (int i = 0; i <= 710; i++)
+                {
+                    AnswerCurrentQuestion();
+                    Console.WriteLine("Total Questions: "+ TotalTount++ + " Loop Count: " + i + " Skip Count: " + skipcount);
 
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    
+                }
+                //menubutton
+
+                OpenQA.Selenium.IWebElement menubutton = driver.FindElementByName("menubutton");
+                menubutton.Click();
+                ReveiwPageTest();
+            }
+        }
+
+        static void ReveiwPageTest()
+        {
+            OpenQA.Selenium.IWebElement viewCoursesButton = driver.FindElementByName("gotoviewcoursesbutton");
+            viewCoursesButton.Click();
+
+            selectQuestionPool(PoolQuestionsEnum.Extra).Click();
+            selectSortOrder(SortOrderEnum.Stalelow).Click();
+            selectSkippedQuestions(SkippedQuestionsEnum.All).Click();
+
+            OpenQA.Selenium.IWebElement showQuestionButton = driver.FindElementByName("viewcoursesshowquestionsbutton");
+            showQuestionButton.Click();
+
+            OpenQA.Selenium.IWebElement drillQuestionButton = driver.FindElementByName("viewcoursesdrillallquestionsbutton");
+            drillQuestionButton.Click();
 
         }
 
 
-        static IWebElement selectQuestionPool(PoolQuestions value)
+
+        static IWebElement selectQuestionSelection (string value)
+        {
+            return ReviewCourseOptions(ReviewCourseOptionsEmun.QuestionSelection, value);
+        }
+
+
+        static IWebElement selectSkippedQuestions (string value)
+        {
+            return ReviewCourseOptions(ReviewCourseOptionsEmun.SkippedQuestions, value);
+        }
+
+
+        static IWebElement selectSortOrder(string value)
         {
 
-            // 218 is tech
-            // 315 is general
-            // 416 is Extra
 
-            string str = value.ToString();
+            return ReviewCourseOptions(ReviewCourseOptionsEmun.SortOrder, value);
 
-            Console.WriteLine("");
 
+            //int val = (int)value;
+
+            ////Console.WriteLine(val);
+
+            //try
+            //{
+            //    var viewCourseButtons = driver.FindElements(By.Name("viewcoursestoptopic"));
+            //    foreach (var element in viewCourseButtons)
+            //    {
+            //        //Console.WriteLine(element.GetAttribute("Value"));
+            //        if (element.GetAttribute("Value") == val.ToString())
+            //        {
+            //            return element;
+            //        }
+            //    }
+
+            //    return null;
+            //}
+            //catch (Exception)
+            //{
+            //    Console.WriteLine(" Exception thrown in 'static IWebElement selectQuestionPool(string value)'");
+            //    return null;
+            //}
+        }
+
+
+        static IWebElement selectQuestionPool(string value)
+        {
+
+
+           return  ReviewCourseOptions("viewcoursestoptopic", value);
+
+           // // 218 is tech
+           // // 315 is general
+           // // 416 is Extra
+
+
+
+            //// int val = (int)value;
+
+
+
+            // //Console.WriteLine(val);
+
+            // try
+            // {
+            //     var viewCourseButtons = driver.FindElements(By.Name("viewcoursestoptopic"));
+            //     foreach (var element in viewCourseButtons)
+            //     {
+            //         //Console.WriteLine(element.GetAttribute("Value"));
+            //         if (element.GetAttribute("Value") == value)
+            //         {
+            //             return element;
+            //         }
+            //     }
+
+            //     return null;
+            // }
+            // catch (Exception)
+            // {
+            //     Console.WriteLine(" Exception thrown in 'static IWebElement selectQuestionPool(string value)'");
+            //     return null;
+            // }            
+        }
+
+
+        static IWebElement ReviewCourseOptions(string optionName, string value)
+        {
             try
             {
-                var viewCourseButtons = driver.FindElements(By.Name("viewcoursestoptopic"));
+                var viewCourseButtons = driver.FindElements(By.Name(optionName));
                 foreach (var element in viewCourseButtons)
                 {
                     //Console.WriteLine(element.GetAttribute("Value"));
-                    if (element.GetAttribute("Value") == value.ToString())
+                    if (element.GetAttribute("Value") == value)
                     {
                         return element;
                     }
@@ -110,11 +254,12 @@ namespace HTO2
 
                 return null;
             }
+
             catch (Exception)
             {
-                Console.WriteLine(" Exception thrown in 'static IWebElement selectQuestionPool(string value)'");
+                Console.WriteLine(" Exception thrown in 'static IWebElement ReviewCourseOptions(string optionName, string value)'");
                 return null;
-            }            
+            }
         }
 
 
@@ -237,31 +382,106 @@ namespace HTO2
 
         static IWebElement getAnswerElement(string answer)
         {
+          //  string  qanswer = "You receive reports of \"hum\" on your station's transmitted signal";
+          //  string correctAnswer =  "You receive reports of \"hum\" on your station's transmitted signal";
+            //string correctAnswer = "It will change depending on the resistor's temperature coefficient";
+            //string  qanswer = "The third party’s amateur license has been revoked and not reinstated";
+            //StringTest(answer);
+           //  StringComparer(correctAnswer, qanswer);
+
+
+            //answer = answer.Substring(0, 39);
+            //  string literalAnswer = answer;
+            var originalanswer = answer;
+            
+
+            // string literalAnswer = ToLiteral(answer);
+
+            //   string test = "It will change depending on the resistor's temperature coefficient";
+
+
+
+            int correct = 39; // correct answer
+            int incorrect = 8217;
+
+            //if (answer.Contains("'"))
+            //{
+            //    Console.WriteLine(answer);
+            //}
+
+            string str1 = ((char)correct).ToString();
+            string str2 = @"\" + str1; 
+        //        string literalAnswer = answer.Replace((char)incorrect, (char)correct);
+                string literalAnswer = answer.Replace((char)incorrect,(char)correct);
+                literalAnswer = answer.Replace(str1, str2);
+            //  string literalAnswer = answer.Replace(@"’", @"\’");
+            //  literalAnswer = literalAnswer.Replace("\'", "\\\"");
+
+        //    StringComparer(literalAnswer, answer);
+
+
+            string xPath = "//span[contains(text(), \"" + answer + "\") and contains(@class, 'unselectedAnswer')] ";
+            // string xPath = "//span[contains(text(), \'" + literalAnswer + "\') and contains(@class, 'unselectedAnswer')] ";
+
+
+
+            if (answer.Contains('"'))
+            {
+                 xPath = "//span[contains(text(), \'" + answer + "\') and contains(@class, 'unselectedAnswer')] ";
+            }
+
+
+
+
+            Console.WriteLine("Search Answer xPath: " + xPath);
             System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> answerTextElement = null ;
             try
             {
-                 answerTextElement = driver.FindElements(By.XPath("//span[contains(text(), '" + answer + "') and contains(@class, 'unselectedAnswer')] "));
+                 answerTextElement = driver.FindElements(By.XPath(xPath));
+                if (answerTextElement.Count == 0)
+                {
+
+                    answer = stringPreProcessor(answer);
+                    xPath = "//span[contains(text(), \"" + answer + "\") and contains(@class, 'unselectedAnswer')] ";
+                    if (answer.Contains('"'))
+                    {
+                        xPath = "//span[contains(text(), \'" + answer + "\') and contains(@class, 'unselectedAnswer')] ";
+                    }
+                    answerTextElement = driver.FindElements(By.XPath(xPath));
+                }
+
+
             }
             catch (Exception)
             {
                 return null;
             }
 
+
+            //Console.WriteLine("");  
+            //Console.WriteLine("");  
+            //Console.WriteLine("");  
+
+          //  Console.WriteLine(answerTextElement.Count + " elements have been found containing: " + xPath);
+          //  StringComparer(originalanswer, answer);
             foreach (var element in answerTextElement)
             {
+                Console.WriteLine(element.Text.Trim());
                 if (element.Text.Trim() == answer.Trim())
                 {
                     return element;
                 }
             }
-            return null; 
-    
+            return null;
+
+
+
         }
 
+          
 
-
-        // nolonger needed
-        static string getAnswerElement(int tr, string answer)
+            // nolonger needed
+            static string getAnswerElement(int tr, string answer)
         {
 
 
@@ -572,12 +792,295 @@ namespace HTO2
             return (String)driver.ExecuteScript(jscript, element);
         }
 
+        public static string ToLiteral(string input)
+        {
+            using (var writer = new StringWriter())
+            {
+                using (var provider = CodeDomProvider.CreateProvider("CSharp"))
+                {
+                    provider.GenerateCodeFromExpression(new CodePrimitiveExpression(input), writer, null);
+                    return writer.ToString();
+                }
+            }
+        }
+
+        public static void StringTest(String st1)
+        {
+            var strln = st1.Length;
+            for (int i = 0; i < strln; i++)
+            {
+                var c1 = st1[i];
+                Console.WriteLine(c1 + "=" + (int)c1);
+                
+            }
+        }
+              public static void StringComparer(String st1, string st2)
+        {
+            var strln = st1.Length;
+            for (int i = 0; i < strln; i++)
+            {
+                var c1 = st1[i];
+                var c2 = st2[i];
+
+          
+
+
+                if (c1 != c2)
+                {
+
+                    Console.WriteLine(c1 + "!=" + c2);
+                    Console.WriteLine((int)c1 + "!=" + (int)c2);
+
+                }
+                else
+                {
+                    Console.WriteLine(st1[i] + "=" + st2[i] + "  " + (int)c1);
+                }
+
+            }
+        }
+
+
+
+        public static string stringPreProcessor(string str)
+        {
+
+            var processedStr = string.Empty;
+            char quote = '"';
+            int correct = 39; // correct answer
+            int incorrect = 8217;
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                if ((int)str[i] == incorrect)
+                {
+                    processedStr = processedStr + (char)correct;
+                    continue;
+                }
+                //else if (str[i] == quote)
+                //{
+                //    processedStr = processedStr + "\\" + quote;
+                //}
+                else
+                {
+                    processedStr = processedStr + str[i];
+                    continue;
+                }
+
+           
+            }
+
+            return processedStr;
+        }
 
 
     }
 
+    //enum PoolQuestions
+    //{
+    //    Tech = 218,
+    //    General = 315,
+    //    Extra = 416
+    //}
 
 
+    public static class PoolQuestionsEnum
+    {
+        private const string tech = "218";
+        private const string general = "315";
+        private const string extra = "416";
+
+        //PoolQuestionsEnum()
+        //{ }
+
+        public static string Tech
+        {
+            get
+            {
+                return tech;
+            }
+        }
+
+
+        public static string General
+        {
+            get
+            {
+                return general;
+            }
+        }
+
+        public static string Extra
+        {
+            get
+            {
+                return extra;
+            }
+        }
+
+    }
+
+    //enum SortOrder
+    //{
+    //    CourseOrder = 1,
+    //    QuestionPool = 2,
+    //    Stale = 3,
+    //    LowScore = 4,
+    //    StaleLow = 5,
+    //    RepeatDue = 6
+    //}
+
+//        <p class="viewCoursesInputHeader">Sort order</p>
+//<div><input name = "viewcoursessortorder" type= "radio" value= "Course" checked=""> Course order</div>
+//<div><input name = "viewcoursessortorder" type= "radio" value= "Question" > Question pool</div>
+//<div><input name = "viewcoursessortorder" type= "radio" value= "Stale" > Stale </ div >
+//< div >< input name= "viewcoursessortorder" type= "radio" value= "Low score" > Low score</div>
+//<div><input name = "viewcoursessortorder" type= "radio" value= "Stale and low" > Stale & amp; low</div>
+//<div><input name = "viewcoursessortorder" type="radio" value="Repeat due"> Repeat due</div>
+
+    public static class SortOrderEnum
+    {
+        private const string course = "Course";
+        private const string question = "Question";
+        private const string stale = "Stale";
+        private const string lowscore = "Low score";
+        private const string stalelow = "Stale and low";
+        private const string repeatDue = "Repeat due";
+
+
+        //PoolQuestionsEnum()
+        //{ }
+
+        public static string Course
+        {
+            get
+            {
+                return course;
+            }
+        }
+
+
+        public static string Question
+        {
+            get
+            {
+                return question;
+            }
+        }
+
+        public static string Stale
+        {
+            get
+            {
+                return stale;
+            }
+        }
+
+        public static string Lowscore
+        {
+            get
+            {
+                return lowscore;
+            }
+        }
+
+        public static string Stalelow
+        {
+            get
+            {
+                return stalelow;
+            }
+        }
+
+        public static string RepeatDue
+        {
+            get
+            {
+                return repeatDue;
+            }
+        }
+
+    }
+
+    public static class SkippedQuestionsEnum
+    {
+        private const string all = "A";
+        private const string noSkips = "N";
+        private const string skipsOnly = "Y";
+
+
+        //PoolQuestionsEnum()
+        //{ }
+
+        public static string All
+        {
+            get
+            {
+                return all;
+            }
+        }
+
+
+        public static string NoSkips
+        {
+            get
+            {
+                return noSkips;
+            }
+        }
+
+        public static string SkipsOnly
+        {
+            get
+            {
+                return skipsOnly;
+            }
+        }
+    }
+
+
+
+    public static class ReviewCourseOptionsEmun
+    {
+        private  const string questionPool = "viewcoursestoptopic";
+        private  const string sortOrder = "viewcoursessortorder";
+        private  const string questionSelection = "";
+        private  const string skippedQuestions = "viewcoursesincludeskipped";
+
+        public static string QuestionPool
+        {
+            get
+            {
+                return questionPool;
+            }
+        }
+
+        public static string SortOrder
+        {
+            get
+            {
+                return sortOrder;
+            }
+        }
+
+        public static string QuestionSelection
+        {
+            get
+            {
+                return questionSelection;
+            }
+        }
+
+
+            public static string SkippedQuestions
+        {
+            get
+            {
+                return skippedQuestions;
+            }
+        }
+
+    }
 
 
 }
