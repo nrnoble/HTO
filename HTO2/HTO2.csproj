@@ -63,8 +63,20 @@
     <Content Include="GeneralPool.txt" />
     <Content Include="Misc Notes.txt" />
     <Content Include="QuestionWebPage.txt" />
+    <Content Include="Resources\chromedriver.exe" />
+    <Content Include="Resources\ExtraPool.txt" />
+    <Content Include="Resources\GeneralPool.txt" />
+    <Content Include="Resources\TechPool.txt" />
+    <Content Include="Resources\WebDriver.dll" />
+    <Content Include="Resources\WebDriver.Support.dll" />
+    <Content Include="Resources\WebDriver.Support.xml" />
+    <Content Include="Resources\WebDriver.xml" />
     <Content Include="TechPool.txt" />
     <Content Include="Misc Notes-2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>Copy $(ProjectDir)Resources\*.* $(ProjectDir)$(OutDir)
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

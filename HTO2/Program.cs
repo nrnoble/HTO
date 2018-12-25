@@ -33,38 +33,49 @@ namespace HTO2
         //It will change depending on the resistor's temperature coefficient
         //It will change depending on the resistor's temperature coefficient
 
-        enum PoolQuestions
-        {
-            Tech = 218,
-            General = 315,
-            Extra = 416
-        }
 
 
-        enum SortOrder
-        {
-            CourseOrder = 1,
-            QuestionPool =2,
-            Stale = 3,
-            LowScore = 4,
-            StaleLow = 5,
-            RepeatDue = 6
-        }
+        //enum QuestionCount
+        //{
+        //    Tech = 423,
+        //    General = 462,
+        //    Extra = 712
+        //}
 
-        enum questionSelection
-        {
-            IncludeUnseen = 1,
-            IncludeWeak = 2,
-            IncludeReview = 3,
-            Includelearned = 4
-        }
 
-        enum SkippedQuestions   
-        {
-            All = 1,
-            NoSkips = 2,
-            SkipsOny = 3
-        }
+
+        //enum PoolQuestions
+        //{
+        //    Tech = 218,
+        //    General = 315,
+        //    Extra = 416
+        //}
+
+
+        //enum SortOrder
+        //{
+        //    CourseOrder = 1,
+        //    QuestionPool =2,
+        //    Stale = 3,
+        //    LowScore = 4,
+        //    StaleLow = 5,
+        //    RepeatDue = 6
+        //}
+
+        //enum questionSelection
+        //{
+        //    IncludeUnseen = 1,
+        //    IncludeWeak = 2,
+        //    IncludeReview = 3,
+        //    Includelearned = 4
+        //}
+
+        //enum SkippedQuestions   
+        //{
+        //    All = 1,
+        //    NoSkips = 2,
+        //    SkipsOny = 3
+        //}
 
 
         static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -117,7 +128,7 @@ namespace HTO2
             int TotalTount = 0;
             for (int x = 0; x < 100; x++)
             {
-                for (int i = 0; i <= 710; i++)
+                for (int i = 0; i <= QpoolCount.Tech; i++)
                 {
                     AnswerCurrentQuestion();
                     Console.WriteLine("Total Questions: "+ TotalTount++ + " Loop Count: " + i + " Skip Count: " + skipcount);
@@ -139,7 +150,7 @@ namespace HTO2
             OpenQA.Selenium.IWebElement viewCoursesButton = driver.FindElementByName("gotoviewcoursesbutton");
             viewCoursesButton.Click();
 
-            selectQuestionPool(PoolQuestionsEnum.Extra).Click();
+            selectQuestionPool(PoolQuestionsEnum.Tech).Click();
             selectSortOrder(SortOrderEnum.Stalelow).Click();
             selectSkippedQuestions(SkippedQuestionsEnum.All).Click();
 
@@ -148,6 +159,8 @@ namespace HTO2
 
             OpenQA.Selenium.IWebElement drillQuestionButton = driver.FindElementByName("viewcoursesdrillallquestionsbutton");
             drillQuestionButton.Click();
+
+
 
         }
 
@@ -261,7 +274,6 @@ namespace HTO2
                 return null;
             }
         }
-
 
 
         static string getAnswerElementXpath(String answer)
@@ -683,8 +695,6 @@ namespace HTO2
             string answerLine = Regex.Match(questionFullText, answerLetter + @"\.(.+)").Groups[1].Value.Trim();
             Console.WriteLine("Answer: " + answerLine);
 
-            // var xPathtoAnswerText = getAnswerElementXpath(answerLine);
-            // Console.WriteLine("xPathtoAnswerText: " + xPathtoAnswerText);
 
             var answerElement = getAnswerElement(answerLine);
             if (answerElement != null)
@@ -1039,7 +1049,6 @@ namespace HTO2
     }
 
 
-
     public static class ReviewCourseOptionsEmun
     {
         private  const string questionPool = "viewcoursestoptopic";
@@ -1077,6 +1086,42 @@ namespace HTO2
             get
             {
                 return skippedQuestions;
+            }
+        }
+
+    }
+
+    public static class QpoolCount
+    {
+        private const int tech = 423;
+        private const int general = 462;
+        private const int extra = 712;
+
+        //PoolQuestionsEnum()
+        //{ }
+
+        public static int Tech
+        {
+            get
+            {
+                return tech;
+            }
+        }
+
+
+        public static int General
+        {
+            get
+            {
+                return general;
+            }
+        }
+
+        public static int Extra
+        {
+            get
+            {
+                return extra;
             }
         }
 
