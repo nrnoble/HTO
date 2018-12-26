@@ -41,6 +41,7 @@
             this.questionCount = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.questionCountLabel = new System.Windows.Forms.Label();
+            this.answerButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // userID
@@ -168,11 +169,22 @@
             this.questionCountLabel.TabIndex = 10;
             this.questionCountLabel.Text = "0";
             // 
+            // answerButton
+            // 
+            this.answerButton.Location = new System.Drawing.Point(205, 164);
+            this.answerButton.Name = "answerButton";
+            this.answerButton.Size = new System.Drawing.Size(75, 23);
+            this.answerButton.TabIndex = 11;
+            this.answerButton.Text = "Answer";
+            this.answerButton.UseVisualStyleBackColor = true;
+            this.answerButton.Click += new System.EventHandler(this.answerButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(377, 239);
+            this.Controls.Add(this.answerButton);
             this.Controls.Add(this.questionCountLabel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.questionCount);
@@ -213,6 +225,7 @@
         private System.Windows.Forms.TextBox questionCount;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label questionCountLabel;
+        private System.Windows.Forms.Button answerButton;
     }
 }
 

@@ -57,6 +57,12 @@ namespace HTO
             var password = mf.password.Text.Trim();
             Login(user, password, HTO_LOGIN_URL);
 
+            SelectMainTopics();
+            ClickOnButton("studybutton");
+            AnswerCurrentQuestion();
+
+
+
         }
 
 
@@ -89,6 +95,12 @@ namespace HTO
             actions.Click(LoginButton);
             actions.Perform();
 
+           
+        }
+
+
+        public static void SelectMainTopics()
+        {
             // click on Choose topic Menu button on left of screen
             OpenQA.Selenium.IWebElement choosetopicsbutton = driver.FindElementByName("choosetopicsbutton");
             choosetopicsbutton.Click();
@@ -141,6 +153,7 @@ namespace HTO
                     break;
                 }
             }
+
         }
 
 
@@ -228,7 +241,7 @@ namespace HTO
 
 
         //should not be required
-        static bool doesXpathExist(string xPath)
+        public static bool doesXpathExist(string xPath)
         {
 
             string pageHTML = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
@@ -253,9 +266,9 @@ namespace HTO
 
 
         }
-        
 
-        static IWebElement getAnswerElement(string answer)
+
+        public static IWebElement getAnswerElement(string answer)
         {
             //  string  qanswer = "You receive reports of \"hum\" on your station's transmitted signal";
             //  string correctAnswer =  "You receive reports of \"hum\" on your station's transmitted signal";
@@ -353,9 +366,9 @@ namespace HTO
 
         }
 
-        
 
-        static String getQuestionID(String PageHTML)
+
+        public static String getQuestionID(String PageHTML)
         {
             MatchCollection matches = ReFindQuestionID.Matches(PageHTML);
             String match1 = string.Empty;
@@ -386,7 +399,7 @@ namespace HTO
         }
 
 
-        static String getQuestionYear(String LongQid)
+        public static String getQuestionYear(String LongQid)
         {
             string year = String.Empty;
             year = LongQid.Substring(0, 4);
@@ -394,7 +407,7 @@ namespace HTO
         }
 
 
-        static string getOfficalQid(String LongQid)
+        public static string getOfficalQid(String LongQid)
         {
             String officialQid = String.Empty;
             officialQid = LongQid.Substring(5, 5);
@@ -402,7 +415,7 @@ namespace HTO
         }
         
 
-        static void AnswerCurrentQuestion()
+        public static void AnswerCurrentQuestion()
         {
 
             string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
@@ -521,9 +534,21 @@ namespace HTO
         }
 
 
-        static bool clickOnElement(string NameOfHTMLItem)
+        static void ClickOnButton(string buttonName)
         {
-            OpenQA.Selenium.IWebElement element = driver.FindElementByName("skipquestionbutton");
+            bool status = clickOnElement(buttonName);
+            if (status == false)
+            {
+                MessageBox.Show("Unable to find " + buttonName + ". Exiting application now");
+                Application.Exit();
+            }
+        }
+
+
+
+        public static bool clickOnElement(string NameOfHTMLItem)
+        {
+            OpenQA.Selenium.IWebElement element = driver.FindElementByName(NameOfHTMLItem);
             if (element == null)
             {
                 return false;
@@ -534,7 +559,7 @@ namespace HTO
         }
 
 
-        static void clickThisXpath(string fullXpath)
+        public static void clickThisXpath(string fullXpath)
         {
             if (doesXpathExist(fullXpath) == true)
             {
@@ -543,7 +568,7 @@ namespace HTO
         }
 
 
-        static String getXPath(IWebElement element)
+        public static String getXPath(IWebElement element)
         {
             String jscript = "function getPathTo(node) {" +
                 "  var stack = [];" +

@@ -48,5 +48,11 @@ namespace HTO
             startButton.Enabled = true;
            // this.Refresh();
         }
+
+        private void answerButton_Click(object sender, EventArgs e)
+        {
+            HTO.HTOAuto.AnswerCurrentQuestion();
+           
+        }
     }
 }
