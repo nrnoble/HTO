@@ -11,11 +11,11 @@ using OpenQA.Selenium.Interactions;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
+
 using System.Runtime.InteropServices;
 using System.CodeDom.Compiler;
 using System.CodeDom;
-
-
 
 
 namespace HTO
@@ -35,6 +35,14 @@ namespace HTO
         static string GeneralQuestions = File.ReadAllText(@".\GeneralPool.txt");
         static string ExtraQuestions = File.ReadAllText(@".\ExtraPool.txt");
 
+        public enum Exam
+        {
+            Tech = 218,
+            General = 315,
+            Extra = 416
+        }
+
+
 
         // display form
         public static void Initialization()
@@ -45,12 +53,23 @@ namespace HTO
             Application.Run(mf);
         }
 
+        public static void StartBrowswer()
+        {
+            driver = new ChromeDriver();
 
+        }
+
+       
         public static void StartAutomation()
         {
 
-            // Using the Chrome broswer
+           // Using the Chrome broswer
             driver = new ChromeDriver();
+           
+           // Thread thread = new Thread(new ThreadStart(StartBrowswer));
+           // thread.Start();
+
+      
 
             // get User & Pwd from Main form and login into HTO
             var user = mf.userID.Text.Trim();
@@ -59,10 +78,6 @@ namespace HTO
 
             SelectMainTopics();
             ClickOnButton("studybutton");
-            AnswerCurrentQuestion();
-
-
-
         }
 
 
@@ -74,36 +89,41 @@ namespace HTO
         /// <param name="loginURL">HTO Login page</param>
         public static void Login(string userEmail, string password, string loginURL)
         {
-  
+
             // used for sending clicks and and characters
             Actions actions = new Actions(driver);
 
 
             // set driver timeout and launch browser
-            driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 10);
+            driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 12);
             driver.Navigate().GoToUrl(loginURL);
 
 
             // Get the elements of the login elements from HTML
-            OpenQA.Selenium.IWebElement LoginBox = driver.FindElementByName("loginemailaddress");
-            OpenQA.Selenium.IWebElement LoginPassword = driver.FindElementByName("loginpassword");
-            OpenQA.Selenium.IWebElement LoginButton = driver.FindElementByName("loginbutton");
-
+            
+                OpenQA.Selenium.IWebElement LoginBox = driver.FindElementByName("loginemailaddress");
+                OpenQA.Selenium.IWebElement LoginPassword = driver.FindElementByName("loginpassword");
+                OpenQA.Selenium.IWebElement LoginButton = driver.FindElementByName(HTOMenuButtons.Login);
+            
+            
             //Execute auto login
-            actions.SendKeys(LoginBox, userEmail);
-            actions.SendKeys(LoginPassword, password);
-            actions.Click(LoginButton);
-            actions.Perform();
-
-           
+            {
+                actions.SendKeys(LoginBox, userEmail);
+                actions.SendKeys(LoginPassword, password);
+                actions.Click(LoginButton);
+                actions.Perform();
+            }
         }
 
 
         public static void SelectMainTopics()
         {
             // click on Choose topic Menu button on left of screen
-            OpenQA.Selenium.IWebElement choosetopicsbutton = driver.FindElementByName("choosetopicsbutton");
-            choosetopicsbutton.Click();
+            // OpenQA.Selenium.IWebElement choosetopicsbutton = driver.FindElementByName("choosetopicsbutton");
+            // choosetopicsbutton.Click();
+
+            ClickOnButton(HTOMenuButtons.ChooseTopics);
+
 
             // get the selected radio Button
             var checkedButton = mf.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
@@ -156,26 +176,271 @@ namespace HTO
 
         }
 
+        /// <summary>
+        ///  Core function that answers an individual HTO question in browser
+        /// </summary>
+        public static bool AnswerCurrentQuestion()
+        {
 
-        static IWebElement selectQuestionSelection(string value)
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            var handle = driver.CurrentWindowHandle;
+
+            Console.WriteLine("CurrentWindowHandle: " + handle);
+            // string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
+            // string answerLine =  GetCorrectAnswerText(html);
+
+            // This section locates the HTML element that is the correct answer
+            // and then sends a 'click" message.
+            {
+                var answerElement = getAnswerElement();
+                if (answerElement != null)
+                {
+                    // Click on correct answer
+                    answerElement.Click();
+                    IncreamentQuestionCounter();
+                    mf.Refresh();
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Problem answering this question");
+                    return false;
+                    // If correct answer can not be found, then click on skipbutton.
+                    // Console.WriteLine("Skipping question: " + Qid);
+                    // questionSkippedCount++;
+                    //  ClickOnSkipButton();
+                    // TODO: check for skip button
+                    // If skip button does not exist, then look for OK button and click.
+                }
+            }
+        }
+        
+
+        public static string GetCorrectAnswerText(string html)
+        {
+            //TODO: This function should be broken down into several smaller functions.
+
+
+
+            // string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
+            String longQid = getQuestionID(html);
+            Console.WriteLine("longID Found: " + longQid);
+            if (longQid == string.Empty)
+            {
+                Console.WriteLine("longID not Found: " + longQid);
+                return string.Empty;
+            }
+
+
+
+            string qestionYear = getQuestionYear(longQid);
+            if (qestionYear == string.Empty)
+            {
+                // if Year is empty this get executed something signficantly has gone wrong.
+
+                Console.WriteLine("No valid year found. Exiting application");
+                Application.Exit();
+            }
+
+            {
+                // this section selects the active question pool based on 'year' fount in the questionID
+
+                if (qestionYear == "2018")
+                {
+                    selectedQuestionPool = techQuestions;
+                    Console.WriteLine("Year: " + qestionYear + ". Setting to Tech pool questions");
+                }
+                else if (qestionYear == "2015")
+                {
+                    selectedQuestionPool = GeneralQuestions;
+                    Console.WriteLine("Year: " + qestionYear + ". Setting to General pool questions");
+                }
+                else if (qestionYear == "2016")
+                {
+                    selectedQuestionPool = ExtraQuestions;
+                    Console.WriteLine("Year: " + qestionYear + ". Setting to Extra pool questions");
+                }
+                else
+                {
+                    MessageBox.Show("The current year is invalid: " + qestionYear + ".  Exit app here.");
+                    Application.Exit();
+                }
+            }
+
+
+            // Get the question question ID that will match the official ID in the question pool.
+            string Qid = getOfficalQid(longQid);
+            Console.WriteLine("QID: " + Qid);
+            //string RxFindStr = Qid + @"\(.\).+?~~";
+            string RxFindStr = Qid + @".+?\(.+?~~";
+            //Console.WriteLine(RxFindStr);
+            Regex RxfindQuestionInPool = new Regex(RxFindStr, RegexOptions.Singleline);
+
+            // Location all Question IDs 
+            MatchCollection matches = RxfindQuestionInPool.Matches(selectedQuestionPool);
+
+            String questionFullText = string.Empty;
+            if (matches.Count == 0)
+            {
+                // TODO: Search for OK button, and click it then restart answering question.
+                //       If no OK button, then select skip button.
+                //       if no skip button, the hault execution.
+                MessageBox.Show("Match count is zero for finding '" + Qid + "' in the question pool");
+                return string.Empty;
+                // Application.Exit();
+            }
+
+            if (matches.Count == 1)
+            {
+                questionFullText = matches[0].Value.ToString();
+                Console.WriteLine(questionFullText);
+            }
+
+            if (matches.Count == 2)
+            {
+                questionFullText = matches[1].Value.ToString();
+                Console.WriteLine(questionFullText);
+            }
+
+            if (matches.Count > 2)
+            {
+                return string.Empty;
+                // MessageBox.Show("There are 3 or more matches found, there should be no more than 2. Exit here");
+                // Application.Exit();
+            }
+
+
+            string answerLetter = Regex.Match(questionFullText, @"\(([^)]*)\)").Groups[1].Value;
+            Console.WriteLine("Going to select answer: " + answerLetter);
+
+            // Strip off the Alpha Option (A,B,C,D) from line
+            string answerLine = Regex.Match(questionFullText, answerLetter + @"\.(.+)").Groups[1].Value.Trim();
+            Console.WriteLine("Correct answer: " + answerLine);
+
+            return answerLine;
+
+            // This section locates the HTML element that is the correct answer
+            // and then sends a 'click" message.
+            //{
+            //    var answerElement = getAnswerElement(answerLine);
+            //    if (answerElement != null)
+            //    {
+            //        // Click on correct answer
+            //        answerElement.Click();
+            //    }
+            //    else
+            //    {
+            //        // If correct answer can not be found, then click on skipbutton.
+            //        Console.WriteLine("Skipping question: " + Qid);
+            //        questionSkippedCount++;
+            //        ClickOnSkipButton();
+            //        // TODO: check for skip button
+            //        // If skip button does not exist, then look for OK button and click.
+            //    }
+            //}
+        }
+
+
+        public static void DoPracticeExam(Exam exam)
+        {
+            bool status = ClickOnButton(HTOMenuButtons.MainMenu);
+
+            status = ClickOnButton(HTOMenuButtons.PracticeExam);
+            if (status == false)
+            {
+                return;
+            }
+            
+
+            var checkedButton = mf.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
+
+            var selectedPool = checkedButton.Text;
+            var totalExamQuestions = 35;
+            if (selectedPool == "General")
+            {
+                driver.FindElementById("generatenewpracticeexamtopicT315").Click();
+            }
+            else if (selectedPool == "Extra")
+            {
+                driver.FindElementById("generatenewpracticeexamtopicT416").Click();
+                totalExamQuestions = 50;
+            }
+            else
+            {
+                driver.FindElementById("generatenewpracticeexamtopicT218").Click();
+            }
+
+            status = ClickOnButton("generatenewpracticeexambutton");
+            if (status == false)
+            {
+                return;
+            }
+            
+
+
+            for (int i = 0; i < totalExamQuestions; i++)
+            {
+                status = HTOAuto.AnswerCurrentQuestion();
+                if (status == false)
+                {
+                    Console.WriteLine("Unable to answer this question. Exiting exam early");
+                    // exitpracticeexamearlybutton
+                    ClickOnButton("exitpracticeexamearlybutton");
+                    break;
+                }
+                else
+                {
+                   // IncreamentQuestionCounter();
+                }
+
+                // RandomSleep(1000, 5000);
+            }
+        }
+
+
+        public static void IncreamentQuestionCounter()
+        {
+            string qcountStr = mf.questionCountLabel.Text;
+            int qcount = int.Parse(qcountStr);
+            qcount++;
+            mf.questionCountLabel.Text = qcount.ToString();
+        }
+
+
+        public static void RandomSleep(int minMs, int maxMs)
+        {
+            Random rnd = new Random(DateTime.Now.Millisecond);
+         
+                var sleepTime = rnd.Next(minMs, maxMs);
+               Console.WriteLine("Sleeping for " + sleepTime + " ms");
+                System.Threading.Thread.Sleep(sleepTime);
+         
+
+        }
+
+
+        static IWebElement SelectQuestionSelection(string value)
         {
             return ReviewCourseOptions(ReviewCourseOptionsEmun.QuestionSelection, value);
         }
 
 
-        static IWebElement selectSkippedQuestions(string value)
+        static IWebElement SelectSkippedQuestions(string value)
         {
             return ReviewCourseOptions(ReviewCourseOptionsEmun.SkippedQuestions, value);
         }
 
 
-        static IWebElement selectSortOrder(string value)
+        static IWebElement SelectSortOrder(string value)
         {
             return ReviewCourseOptions(ReviewCourseOptionsEmun.SortOrder, value);
         }
 
 
-        static IWebElement selectQuestionPool(string value)
+        static IWebElement SelectQuestionPool(string value)
         {
 
 
@@ -268,58 +533,30 @@ namespace HTO
         }
 
 
-        public static IWebElement getAnswerElement(string answer)
+        public static IWebElement getAnswerElement()
         {
-            //  string  qanswer = "You receive reports of \"hum\" on your station's transmitted signal";
-            //  string correctAnswer =  "You receive reports of \"hum\" on your station's transmitted signal";
-            //string correctAnswer = "It will change depending on the resistor's temperature coefficient";
-            //string  qanswer = "The third party’s amateur license has been revoked and not reinstated";
-            //StringTest(answer);
-            //  StringComparer(correctAnswer, qanswer);
+
+            string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
+            string answer = GetCorrectAnswerText(html);
+
+            if (answer == string.Empty)
+            {
+
+                Console.WriteLine("getAnswerElement() has failed. Returning null");
+                return null;
+            }
 
 
-            //answer = answer.Substring(0, 39);
-            //  string literalAnswer = answer;
             var originalanswer = answer;
 
-
-            // string literalAnswer = ToLiteral(answer);
-
-            //   string test = "It will change depending on the resistor's temperature coefficient";
-
-
-
-            int correct = 39; // correct answer
-            int incorrect = 8217;
-
-            //if (answer.Contains("'"))
-            //{
-            //    Console.WriteLine(answer);
-            //}
-
-            string str1 = ((char)correct).ToString();
-            string str2 = @"\" + str1;
-            //        string literalAnswer = answer.Replace((char)incorrect, (char)correct);
-            string literalAnswer = answer.Replace((char)incorrect, (char)correct);
-            literalAnswer = answer.Replace(str1, str2);
-            //  string literalAnswer = answer.Replace(@"’", @"\’");
-            //  literalAnswer = literalAnswer.Replace("\'", "\\\"");
-
-            //    StringComparer(literalAnswer, answer);
-
-
+            // use double qoute " in xpath unless the answer line contain  doublequotes in the answer  
             string xPath = "//span[contains(text(), \"" + answer + "\") and contains(@class, 'unselectedAnswer')] ";
-            // string xPath = "//span[contains(text(), \'" + literalAnswer + "\') and contains(@class, 'unselectedAnswer')] ";
-
-
-
+    
+            // check for double quote in answer, if true, then use a single quote.
             if (answer.Contains('"'))
             {
                 xPath = "//span[contains(text(), \'" + answer + "\') and contains(@class, 'unselectedAnswer')] ";
             }
-
-
-
 
             Console.WriteLine("Search Answer xPath: " + xPath);
             System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> answerTextElement = null;
@@ -367,10 +604,20 @@ namespace HTO
         }
 
 
-
+        /// <summary>
+        /// this helper function will search HTO's HTML looking for the Question ID
+        /// returns the question ID of the active question.
+        /// If no ID is found, an empty string is returned.
+        /// </summary>
+        /// <param name="PageHTML"></param>
+        /// <returns></returns>
         public static String getQuestionID(String PageHTML)
         {
+            // use a regular expression to find the full question ID. ie
+            // static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase)
             MatchCollection matches = ReFindQuestionID.Matches(PageHTML);
+
+
             String match1 = string.Empty;
             String match2 = string.Empty;
             String QID = String.Empty;
@@ -399,6 +646,11 @@ namespace HTO
         }
 
 
+        /// <summary>
+        /// Helper function to get year from question ID
+        /// </summary>
+        /// <param name="LongQid">LongQid</param>
+        /// <returns></returns>
         public static String getQuestionYear(String LongQid)
         {
             string year = String.Empty;
@@ -407,154 +659,77 @@ namespace HTO
         }
 
 
+        /// <summary>
+        /// Helper function that gets the official Question ID that matches
+        /// the ID found in the question pool text files
+        /// </summary>
+        /// <param name="LongQid"></param>
+        /// <returns></returns>
         public static string getOfficalQid(String LongQid)
         {
             String officialQid = String.Empty;
             officialQid = LongQid.Substring(5, 5);
             return officialQid;
         }
-        
-
-        public static void AnswerCurrentQuestion()
-        {
-
-            string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
-            String longQid = getQuestionID(html);
-            Console.WriteLine(longQid);
-
-            string qestionYear = getQuestionYear(longQid);
-            if (qestionYear == string.Empty)
-            {
-                Console.WriteLine("No valid year found. Exiting application");
-                Application.Exit();
-
-            }
 
 
 
-
-
-            if (qestionYear == "2018")
-            {
-                selectedQuestionPool = techQuestions;
-                Console.WriteLine("Year: " + qestionYear + ". Setting to Tech pool questions");
-            }
-            else if (qestionYear == "2015")
-            {
-                selectedQuestionPool = GeneralQuestions;
-                Console.WriteLine("Year: " + qestionYear + ". Setting to General pool questions");
-            }
-            else if (qestionYear == "2016")
-            {
-                selectedQuestionPool = ExtraQuestions;
-                Console.WriteLine("Year: " + qestionYear + ". Setting to Extra pool questions");
-
-
-            }
-            else
-            {
-                MessageBox.Show("The current year is invalid: " + qestionYear + ".  Exit app here.");
-                Application.Exit();
-            }
-
-
-
-
-
-
-
-            string Qid = getOfficalQid(longQid);
-            Console.WriteLine(Qid);
-            //string RxFindStr = Qid + @"\(.\).+?~~";
-            string RxFindStr = Qid + @".+?\(.+?~~";
-            Console.WriteLine(RxFindStr);
-            Regex RxfindQuestionInPool = new Regex(RxFindStr, RegexOptions.Singleline);
-
-
-            MatchCollection matches = RxfindQuestionInPool.Matches(selectedQuestionPool);
-
-            String questionFullText = string.Empty;
-            if (matches.Count == 0)
-            {
-                MessageBox.Show("Match count is zero for finding '" + Qid + "' in the question pool");
-                Application.Exit();
-
-                //TODO: Search for OK box, and click it then restart answering question.
-            }
-
-            if (matches.Count == 1)
-            {
-                questionFullText = matches[0].Value.ToString();
-                Console.WriteLine(questionFullText);
-            }
-
-            if (matches.Count == 2)
-            {
-                questionFullText = matches[1].Value.ToString();
-                Console.WriteLine(questionFullText);
-            }
-
-            if (matches.Count > 2)
-            {
-                MessageBox.Show("There are 3 or more matches found, there should be no more than 2. Exit here");
-                Application.Exit();
-            }
-
-
-            string answerLetter = Regex.Match(questionFullText, @"\(([^)]*)\)").Groups[1].Value;
-            Console.WriteLine(answerLetter);
-
-
-            string answerLine = Regex.Match(questionFullText, answerLetter + @"\.(.+)").Groups[1].Value.Trim();
-            Console.WriteLine("Answer: " + answerLine);
-
-
-            var answerElement = getAnswerElement(answerLine);
-            if (answerElement != null)
-            {
-                answerElement.Click();
-            }
-            else
-            {
-                Console.WriteLine("Skipping question: " + Qid);
-                questionSkippedCount++;
-                ClickOnSkipButton();
-            }
-        }
-
-
-        static void ClickOnSkipButton()
+        //TODO: Replace this with just ClickOnButton
+        public static bool ClickOnSkipButton()
         {
             bool status = clickOnElement("skipquestionbutton");
+
             if (status == false)
             {
-                MessageBox.Show("Unable to find Skip Question button. Exiting application now");
-                Application.Exit();
+                Console.WriteLine("Unable to find Skip button");
+                return false;
             }
+
+            return true;
+
         }
 
 
-        static void ClickOnButton(string buttonName)
+        public static bool ClickOnButton(string buttonName)
         {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             bool status = clickOnElement(buttonName);
             if (status == false)
             {
-                MessageBox.Show("Unable to find " + buttonName + ". Exiting application now");
-                Application.Exit();
+                ///MessageBox.Show("Unable to find " + buttonName + ". Exiting application now");
+                Console.WriteLine("Unable to find " + buttonName + ". returning false");
+                return false;
             }
+
+            return true;
         }
+
 
 
 
         public static bool clickOnElement(string NameOfHTMLItem)
         {
-            OpenQA.Selenium.IWebElement element = driver.FindElementByName(NameOfHTMLItem);
-            if (element == null)
+            OpenQA.Selenium.IWebElement element = null;
+            try
+            {
+                element = driver.FindElementByName(NameOfHTMLItem);
+                element.Click();
+            }
+            catch (Exception)
             {
                 return false;
             }
 
-            element.Click();
+
             return true;
         }
 
@@ -583,46 +758,10 @@ namespace HTO
         }
 
 
-        public static string ToLiteral(string input)
-        {
-            using (var writer = new StringWriter())
-            {
-                using (var provider = CodeDomProvider.CreateProvider("CSharp"))
-                {
-                    provider.GenerateCodeFromExpression(new CodePrimitiveExpression(input), writer, null);
-                    return writer.ToString();
-                }
-            }
-        }
 
-
-        public static void StringComparer(String st1, string st2)
-        {
-            var strln = st1.Length;
-            for (int i = 0; i < strln; i++)
-            {
-                var c1 = st1[i];
-                var c2 = st2[i];
-
-
-
-
-                if (c1 != c2)
-                {
-
-                    Console.WriteLine(c1 + "!=" + c2);
-                    Console.WriteLine((int)c1 + "!=" + (int)c2);
-
-                }
-                else
-                {
-                    Console.WriteLine(st1[i] + "=" + st2[i] + "  " + (int)c1);
-                }
-
-            }
-        }
-
-
+        // process the answer for quotes so it matches
+        // the quote character matches what is found in the hmtl
+        // TODO: this possibily could be fixed by a Search\Replace in the Question pool text file.
         public static string stringPreProcessor(string str)
         {
 
@@ -869,6 +1008,383 @@ namespace HTO
 
     }
 
+
+    public static class HTOMenuButtons
+    {
+        private const string mainMenu = "menubutton";
+        private const string chooseTopics = "choosetopicsbutton";
+        private const string study = "studybutton";
+        private const string viewCourses = "gotoviewcoursesbutton";
+        private const string practiceExam = "practiceexambutton";
+        private const string myOptions = "edituseroptions"; //edituseroptions864561. What is number at end. Is it user id appended to end?
+        private const string myAccount = "editaccountbutton";
+        private const string purchase = "oldpurchasebutton";
+        private const string topScores = "viewuserlistbutton";
+        private const string studyHistory = "gotoviewstudyhistorybutton";
+        private const string login = "loginbutton";
+        private const string logout = "logoutbutton";
+
+        public static string MainMenu
+        {
+            get
+            {
+                return mainMenu;
+            }
+        }
+
+
+        public static string ChooseTopics
+        {
+            get
+            {
+                return chooseTopics;
+            }
+        }
+
+
+        public static string Study
+        {
+            get
+            {
+                return study;
+            }
+        }
+
+        
+        public static string ViewCourses
+        {
+            get
+            {
+                return viewCourses;
+            }
+        }
+
+
+        public static string PracticeExam
+        {
+            get
+            {
+                return practiceExam;
+            }
+        }
+
+
+        public static string Login
+        {
+            get
+            {
+                return login;
+            }
+        }
+
+        // Disabled because it throws an error
+        //public static string MyOptions
+        //{
+        //    get
+        //    {
+        //        return myOptions;
+        //    }
+        //}
+
+
+        public static string MyAccount
+        {
+            get
+            {
+                return myAccount;
+            }
+        }
+
+
+        public static string Purchase
+        {
+            get
+            {
+                return purchase;
+            }
+        }
+
+        
+        public static string TopScores
+        {
+            get
+            {
+                return topScores;
+            }
+        }
+
+        
+        public static string StudyHistory
+        {
+            get
+            {
+                return studyHistory;
+            }
+        }
+
+
+        public static string Logout
+        {
+            get
+            {
+                return logout;
+            }
+        }
+
+
+    }
+
+    public static class ButtonTemplate
+    {
+        private const string a = "";
+        private const string b = "";
+        private const string c = "";
+        private const string d = "";
+        private const string e = "";
+        private const string f = ""; 
+        private const string g = "";
+        private const string h = "";
+        private const string i = "";
+        private const string j = "";
+        private const string k = "";
+        private const string l = "";
+
+        public static string A
+        {
+            get
+            {
+                return a;
+            }
+        }
+
+
+        public static string B
+        {
+            get
+            {
+                return b;
+            }
+        }
+
+
+        public static string C
+        {
+            get
+            {
+                return c;
+            }
+        }
+
+
+        public static string D
+        {
+            get
+            {
+                return d;
+            }
+        }
+
+
+        public static string E
+        {
+            get
+            {
+                return e;
+            }
+        }
+
+
+        public static string F
+        {
+            get
+            {
+                return e;
+            }
+        }
+
+
+
+        public static string G
+        {
+            get
+            {
+                return g;
+            }
+        }
+
+
+        public static string H
+        {
+            get
+            {
+                return h;
+            }
+        }
+
+
+        public static string I
+        {
+            get
+            {
+                return i;
+            }
+        }
+
+
+        public static string J
+        {
+            get
+            {
+                return j;
+            }
+        }
+
+
+        public static string K
+        {
+            get
+            {
+                return k;
+            }
+        }
+
+        public static string L
+        {
+            get
+            {
+                return l;
+            }
+        }
+
+
+    }
+
+
+
+    public static class PracticeExamButtons
+    {
+        private const string simulatedExam = "simulatedExamRadioButton";
+        private const string trueRandom = "trueRandomExamRadioButton";
+        private const string c = "focusExamRadioButtons";
+        private const string d = "";
+        private const string e = "";
+        private const string f = ""; 
+        private const string g = "";
+        private const string h = "";
+        private const string i = "";
+        private const string j = "";
+        private const string k = "";
+        private const string l = "";
+
+        public static string SimulatedExam
+        {
+            get
+            {
+                return simulatedExam;
+            }
+        }
+
+
+        public static string TrueRandom
+        {
+            get
+            {
+                return trueRandom;
+            }
+        }
+
+
+        public static string C
+        {
+            get
+            {
+                return c;
+            }
+        }
+
+
+        public static string D
+        {
+            get
+            {
+                return d;
+            }
+        }
+
+
+        public static string E
+        {
+            get
+            {
+                return e;
+            }
+        }
+
+
+        public static string F
+        {
+            get
+            {
+                return e;
+            }
+        }
+
+
+
+        public static string G
+        {
+            get
+            {
+                return g;
+            }
+        }
+
+
+        public static string H
+        {
+            get
+            {
+                return h;
+            }
+        }
+
+
+        public static string I
+        {
+            get
+            {
+                return i;
+            }
+        }
+
+
+        public static string J
+        {
+            get
+            {
+                return j;
+            }
+        }
+
+
+        public static string K
+        {
+            get
+            {
+                return k;
+            }
+        }
+
+        public static string L
+        {
+            get
+            {
+                return l;
+            }
+        }
+
+
+    }
 
 }
 

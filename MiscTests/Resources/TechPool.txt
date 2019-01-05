@@ -581,7 +581,7 @@ D. 446.000 MHz
 
 T2A03 (A)
 What is a common repeater frequency offset in the 70 cm band?
-A. Plus or minus 5 Mhz
+A. Plus or minus 5 MHz
 B. Plus or minus 600 kHz
 C. Plus or minus 500 kHz
 D. Plus or minus 1 Mhz

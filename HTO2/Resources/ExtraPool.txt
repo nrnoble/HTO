@@ -465,7 +465,7 @@ D. The VE session manager
 E1E07 (B) [97.509]
 What should a VE do if a candidate fails to comply with the examiner's instructions during an amateur operator license examination?
 A. Warn the candidate that continued failure to comply will result in termination of the examination
-B. Immediately terminate the candidate’s examination
+B. Immediately terminate the candidate's examination
 C. Allow the candidate to complete the examination, but invalidate the results
 D. Immediately terminate everyone's examination and close the session
 ~~

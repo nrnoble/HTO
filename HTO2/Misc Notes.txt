@@ -176,3 +176,7 @@ User rank:
 </td>
 </tr>
 </tbody>
+
+
+You receive reports of "hum" on your station’s transmitted signal
+You receive reports of "hum" on your station's transmitted signal
