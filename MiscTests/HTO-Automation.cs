@@ -63,13 +63,15 @@ namespace HTO
         public static void StartAutomation()
         {
 
-           // Using the Chrome broswer
-            driver = new ChromeDriver();
-           
-           // Thread thread = new Thread(new ThreadStart(StartBrowswer));
-           // thread.Start();
+            // Using the Chrome broswer
 
-      
+            Console.WriteLine("Starting Brower");
+            driver = new ChromeDriver();
+
+            // Thread thread = new Thread(new ThreadStart(StartBrowswer));
+            // thread.Start();
+
+
 
             // get User & Pwd from Main form and login into HTO
             var user = mf.userID.Text.Trim();
@@ -95,19 +97,22 @@ namespace HTO
 
 
             // set driver timeout and launch browser
+            Console.WriteLine("Goto " + loginURL);
             driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 12);
             driver.Navigate().GoToUrl(loginURL);
 
 
             // Get the elements of the login elements from HTML
             
-                OpenQA.Selenium.IWebElement LoginBox = driver.FindElementByName("loginemailaddress");
-                OpenQA.Selenium.IWebElement LoginPassword = driver.FindElementByName("loginpassword");
-                OpenQA.Selenium.IWebElement LoginButton = driver.FindElementByName(HTOMenuButtons.Login);
+            OpenQA.Selenium.IWebElement LoginBox = driver.FindElementByName("loginemailaddress");
+            OpenQA.Selenium.IWebElement LoginPassword = driver.FindElementByName("loginpassword");
+            OpenQA.Selenium.IWebElement LoginButton = driver.FindElementByName(HTOMenuButtons.Login);
             
             
             //Execute auto login
             {
+
+                Console.WriteLine("logging onto HTO as "+ userEmail);
                 actions.SendKeys(LoginBox, userEmail);
                 actions.SendKeys(LoginPassword, password);
                 actions.Click(LoginButton);
@@ -122,6 +127,8 @@ namespace HTO
             // OpenQA.Selenium.IWebElement choosetopicsbutton = driver.FindElementByName("choosetopicsbutton");
             // choosetopicsbutton.Click();
 
+
+            Console.WriteLine("Selecting main menu button :"+ HTOMenuButtons.ChooseTopics);
             ClickOnButton(HTOMenuButtons.ChooseTopics);
 
 
@@ -130,19 +137,24 @@ namespace HTO
 
             //Get the selected Pool 
             var poolValue = "218";
+            string selectedTopicMsg = string.Empty;
             switch (checkedButton.Text)
             {
 
                 case "Tech":
                     poolValue = "218";
+
+                    selectedTopicMsg = "Selecting Tech topics";
                     break;
 
                 case "General":
                     poolValue = "315";
+                    selectedTopicMsg = "Selecting General topics";
                     break;
 
                 case "Extra":
                     poolValue = "416";
+                    selectedTopicMsg = "Selecting Extra topics";
                     break;
 
                 default:
@@ -155,6 +167,8 @@ namespace HTO
 
             // Initialize by  unchecking all HTO topics 
             var elements = driver.FindElements(By.Name("choosetopic"));
+
+            Console.WriteLine("Deselecting active topics");
             foreach (var elment in elements)
             {
 
@@ -169,6 +183,7 @@ namespace HTO
             {
                 if (elment.GetAttribute("Value") == poolValue)
                 {
+                    Console.WriteLine(selectedTopicMsg);
                     elment.Click();
                     break;
                 }

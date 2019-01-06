@@ -104,6 +104,12 @@ namespace HTO
                     // try clicking OK button
                     var okbuttonStatus = HTOAuto.clickOnElement("okbutton");
 
+                    // Now try answering question again.
+                    if (okbuttonStatus == true)
+                    {
+                       status = HTO.HTOAuto.AnswerCurrentQuestion();
+                    }
+
                     // If there is no OK button, try Skip button.
                     if (okbuttonStatus == false)
                     {
@@ -133,7 +139,7 @@ namespace HTO
             System.Threading.Thread.Sleep(3000);
             HTOAuto.ClickOnButton(HTOMenuButtons.TopScores);
             System.Threading.Thread.Sleep(3000);
-            HTOAuto.ClickOnButton(HTOMenuButtons.StudyHistory);
+           // HTOAuto.ClickOnButton(HTOMenuButtons.StudyHistory);
             ButtonState(true);
             stopButton.Enabled = false;
         }
