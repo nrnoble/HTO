@@ -61,10 +61,12 @@ namespace HTO
             stopButton.Enabled = false;
         }
 
+
         private void userID_TextChanged(object sender, EventArgs e)
         {
             // do nothing
         }
+
 
         private void stopButton_Click(object sender, EventArgs e)
         {
@@ -72,8 +74,6 @@ namespace HTO
             //studyButton.Enabled = true;
             // this.Refresh();
         }
-
-
 
 
         private void answerButton_Click(object sender, EventArgs e)
@@ -121,6 +121,7 @@ namespace HTO
             stopButton.Enabled = false;
         }
 
+
         private void Testbtn_Click(object sender, EventArgs e)
         {
             stopButton.Enabled = true;
@@ -144,6 +145,7 @@ namespace HTO
             stopButton.Enabled = false;
         }
 
+
         private void PracticeExamBtn_Click(object sender, EventArgs e)
         {
             stopButton.Enabled = true;
@@ -153,9 +155,10 @@ namespace HTO
             stopButton.Enabled = false;
         }
 
+
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-
+          
             stopButton.Enabled = true;
             ButtonState(false);
             
@@ -169,6 +172,7 @@ namespace HTO
             //this.Refresh();
         }
 
+
         public void ButtonState(bool state)
         {  
             PracticeExamBtn.Enabled = state;
@@ -178,5 +182,9 @@ namespace HTO
             this.Refresh();
         }
 
+        private void ShowAnswer_Click(object sender, EventArgs e)
+        {
+            HTO.HTOAuto.ShowCurrentQuestion();
+        }
     }
 }

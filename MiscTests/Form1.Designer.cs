@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.userID = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.password = new System.Windows.Forms.TextBox();
@@ -45,6 +46,8 @@
             this.techPool = new System.Windows.Forms.RadioButton();
             this.generalPoool = new System.Windows.Forms.RadioButton();
             this.extraPool = new System.Windows.Forms.RadioButton();
+            this.LoginTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ShowAnswer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // userID
@@ -91,6 +94,7 @@
             this.studyButton.Size = new System.Drawing.Size(96, 23);
             this.studyButton.TabIndex = 5;
             this.studyButton.Text = "Auto Study";
+            this.LoginTip.SetToolTip(this.studyButton, "Answer a series of study questions back to back");
             this.studyButton.UseVisualStyleBackColor = true;
             this.studyButton.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -123,6 +127,7 @@
             this.maxQuestionCount.Size = new System.Drawing.Size(135, 20);
             this.maxQuestionCount.TabIndex = 8;
             this.maxQuestionCount.Text = "10";
+            this.LoginTip.SetToolTip(this.maxQuestionCount, "The number of questions that will be asnwered when selecting Auto Study");
             // 
             // AnswerQuestionLabel
             // 
@@ -150,6 +155,8 @@
             this.answerButton.Size = new System.Drawing.Size(96, 23);
             this.answerButton.TabIndex = 11;
             this.answerButton.Text = "Single Answer";
+            this.LoginTip.SetToolTip(this.answerButton, "Answer the current question. Question must be currently be visible on page prior " +
+        "to selecting button");
             this.answerButton.UseVisualStyleBackColor = true;
             this.answerButton.Click += new System.EventHandler(this.answerButton_Click);
             // 
@@ -172,6 +179,7 @@
             this.PracticeExamBtn.Size = new System.Drawing.Size(96, 23);
             this.PracticeExamBtn.TabIndex = 13;
             this.PracticeExamBtn.Text = "Practice Exam";
+            this.LoginTip.SetToolTip(this.PracticeExamBtn, "Run a full practice exam of the currently selected Exam (Tech, General, Extra).");
             this.PracticeExamBtn.UseVisualStyleBackColor = true;
             this.PracticeExamBtn.Click += new System.EventHandler(this.PracticeExamBtn_Click);
             // 
@@ -182,6 +190,7 @@
             this.LoginBtn.Size = new System.Drawing.Size(96, 23);
             this.LoginBtn.TabIndex = 14;
             this.LoginBtn.Text = "Login";
+            this.LoginTip.SetToolTip(this.LoginBtn, "Will launch the Chrome Browser and login");
             this.LoginBtn.UseVisualStyleBackColor = true;
             this.LoginBtn.Click += new System.EventHandler(this.LoginBtn_Click);
             // 
@@ -223,12 +232,27 @@
             this.extraPool.UseVisualStyleBackColor = true;
             this.extraPool.Click += new System.EventHandler(this.radioButton1_CheckedChanged);
             // 
+            // LoginTip
+            // 
+            this.LoginTip.ToolTipTitle = "Login";
+            // 
+            // ShowAnswer
+            // 
+            this.ShowAnswer.Location = new System.Drawing.Point(13, 213);
+            this.ShowAnswer.Name = "ShowAnswer";
+            this.ShowAnswer.Size = new System.Drawing.Size(95, 23);
+            this.ShowAnswer.TabIndex = 15;
+            this.ShowAnswer.Text = "Show Answer";
+            this.ShowAnswer.UseVisualStyleBackColor = true;
+            this.ShowAnswer.Click += new System.EventHandler(this.ShowAnswer_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(413, 239);
+            this.ClientSize = new System.Drawing.Size(413, 279);
+            this.Controls.Add(this.ShowAnswer);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.PracticeExamBtn);
             this.Controls.Add(this.Testbtn);
@@ -275,5 +299,7 @@
         private System.Windows.Forms.RadioButton techPool;
         private System.Windows.Forms.RadioButton generalPoool;
         private System.Windows.Forms.RadioButton extraPool;
+        private System.Windows.Forms.ToolTip LoginTip;
+        private System.Windows.Forms.Button ShowAnswer;
     }
 }

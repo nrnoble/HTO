@@ -18,23 +18,33 @@ using System.CodeDom.Compiler;
 using System.CodeDom;
 
 
+
 namespace HTO
 {
 
-    public static class HTOAuto
+    public static partial class HTOAuto
     {
-        static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        static readonly Regex ReFindQuestionId = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         static ChromeDriver driver = null;
         static MainForm mf = null;
 
-        static int questionSkippedCount = 0;
+        //static int questionSkippedCount = 0;
+        
 
-        const string HTO_LOGIN_URL = "https://www.hamradiolicenseexam.com/login.htm";
-        static string selectedQuestionPool = string.Empty;
-        static string techQuestions = File.ReadAllText(@".\TechPool.txt");
-        static string GeneralQuestions = File.ReadAllText(@".\GeneralPool.txt");
-        static string ExtraQuestions = File.ReadAllText(@".\ExtraPool.txt");
+        const string HtoLoginUrl = "https://www.hamradiolicenseexam.com/login.htm";
+        const string TechQuestionPath = @".\TechPool.txt";
+        const string GeneralQuestionPath = @".\GeneralPool.txt";
+        const string ExtraQuestionPath = @".\ExtraPool.txt";
 
+        static AllOfficialQuestionsText QuestionPool = new AllOfficialQuestionsText(TechQuestionPath, GeneralQuestionPath, ExtraQuestionPath);
+        static string _selectedQuestionPool = string.Empty;
+        //static readonly string TechQuestions = File.ReadAllText(@".\TechPool.txt");
+        //static readonly string GeneralQuestions = File.ReadAllText(@".\GeneralPool.txt");
+        //static readonly string ExtraQuestions = File.ReadAllText(@".\ExtraPool.txt");
+        
+
+        private static HamQuestion hq;
+        
         public enum Exam
         {
             Tech = 218,
@@ -42,7 +52,7 @@ namespace HTO
             Extra = 416
         }
 
-
+        
 
         // display form
         public static void Initialization()
@@ -53,31 +63,21 @@ namespace HTO
             Application.Run(mf);
         }
 
-        public static void StartBrowswer()
-        {
-            driver = new ChromeDriver();
 
-        }
 
        
         public static void StartAutomation()
         {
 
-            // Using the Chrome broswer
-
+            // Using the Chrome browser
             Console.WriteLine("Starting Brower");
             driver = new ChromeDriver();
-
-            // Thread thread = new Thread(new ThreadStart(StartBrowswer));
-            // thread.Start();
-
-
-
+            
             // get User & Pwd from Main form and login into HTO
             var user = mf.userID.Text.Trim();
             var password = mf.password.Text.Trim();
-            Login(user, password, HTO_LOGIN_URL);
-
+            Login(user, password, HtoLoginUrl);
+            
             SelectMainTopics();
             ClickOnButton("studybutton");
         }
@@ -111,8 +111,7 @@ namespace HTO
             
             //Execute auto login
             {
-
-                Console.WriteLine("logging onto HTO as "+ userEmail);
+                Console.WriteLine("logging onto HTO as " + userEmail);
                 actions.SendKeys(LoginBox, userEmail);
                 actions.SendKeys(LoginPassword, password);
                 actions.Click(LoginButton);
@@ -196,8 +195,9 @@ namespace HTO
         /// </summary>
         public static bool AnswerCurrentQuestion()
         {
-
-
+            //hq = new HamQuestion(driver.PageSource, QuestionPool);
+            
+            //hq = new HamQuestion();
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("");
@@ -232,7 +232,15 @@ namespace HTO
                 }
             }
         }
-        
+
+        public static string GetCurrentQuestionText(string html)
+        {
+            String longQid = getQuestionID(html);
+           
+            return string.Empty;
+        }
+
+
 
         public static string GetCorrectAnswerText(string html)
         {
@@ -251,8 +259,8 @@ namespace HTO
 
 
 
-            string qestionYear = getQuestionYear(longQid);
-            if (qestionYear == string.Empty)
+            string questionYear = getQuestionYear(longQid);
+            if (questionYear == string.Empty)
             {
                 // if Year is empty this get executed something signficantly has gone wrong.
 
@@ -263,24 +271,27 @@ namespace HTO
             {
                 // this section selects the active question pool based on 'year' fount in the questionID
 
-                if (qestionYear == "2018")
+                if (questionYear == "2018")
                 {
-                    selectedQuestionPool = techQuestions;
-                    Console.WriteLine("Year: " + qestionYear + ". Setting to Tech pool questions");
+                    //_selectedQuestionPool = TechQuestions;
+                    _selectedQuestionPool = QuestionPool.Tech;
+                    Console.WriteLine("Year: " + questionYear + ". Setting to Tech pool questions");
                 }
-                else if (qestionYear == "2015")
+                else if (questionYear == "2015")
                 {
-                    selectedQuestionPool = GeneralQuestions;
-                    Console.WriteLine("Year: " + qestionYear + ". Setting to General pool questions");
+                   // _selectedQuestionPool = GeneralQuestions;
+                    _selectedQuestionPool = QuestionPool.General;
+                    Console.WriteLine("Year: " + questionYear + ". Setting to General pool questions");
                 }
-                else if (qestionYear == "2016")
+                else if (questionYear == "2016")
                 {
-                    selectedQuestionPool = ExtraQuestions;
-                    Console.WriteLine("Year: " + qestionYear + ". Setting to Extra pool questions");
+                   // _selectedQuestionPool = ExtraQuestions;
+                    _selectedQuestionPool = QuestionPool.Extra;
+                    Console.WriteLine("Year: " + questionYear + ". Setting to Extra pool questions");
                 }
                 else
                 {
-                    MessageBox.Show("The current year is invalid: " + qestionYear + ".  Exit app here.");
+                    MessageBox.Show("The current year is invalid: " + questionYear + ".  Exit app here.");
                     Application.Exit();
                 }
             }
@@ -295,7 +306,7 @@ namespace HTO
             Regex RxfindQuestionInPool = new Regex(RxFindStr, RegexOptions.Singleline);
 
             // Location all Question IDs 
-            MatchCollection matches = RxfindQuestionInPool.Matches(selectedQuestionPool);
+            MatchCollection matches = RxfindQuestionInPool.Matches(_selectedQuestionPool);
 
             String questionFullText = string.Empty;
             if (matches.Count == 0)
@@ -455,46 +466,6 @@ namespace HTO
         }
 
 
-        static IWebElement SelectQuestionPool(string value)
-        {
-
-
-            return ReviewCourseOptions("viewcoursestoptopic", value);
-
-            // // 218 is tech
-            // // 315 is general
-            // // 416 is Extra
-
-
-
-            //// int val = (int)value;
-
-
-
-            // //Console.WriteLine(val);
-
-            // try
-            // {
-            //     var viewCourseButtons = driver.FindElements(By.Name("viewcoursestoptopic"));
-            //     foreach (var element in viewCourseButtons)
-            //     {
-            //         //Console.WriteLine(element.GetAttribute("Value"));
-            //         if (element.GetAttribute("Value") == value)
-            //         {
-            //             return element;
-            //         }
-            //     }
-
-            //     return null;
-            // }
-            // catch (Exception)
-            // {
-            //     Console.WriteLine(" Exception thrown in 'static IWebElement selectQuestionPool(string value)'");
-            //     return null;
-            // }            
-        }
-
-
         static IWebElement ReviewCourseOptions(string optionName, string value)
         {
             try
@@ -552,9 +523,13 @@ namespace HTO
         {
 
             string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
-            string answer = GetCorrectAnswerText(html);
+            //string answer = GetCorrectAnswerText(html);
 
-            if (answer == string.Empty)
+            hq = new HamQuestion(driver.PageSource, QuestionPool);
+
+            string answer = hq.Answer;
+
+            if (hq.Answer == string.Empty)
             {
 
                 Console.WriteLine("getAnswerElement() has failed. Returning null");
@@ -562,7 +537,7 @@ namespace HTO
             }
 
 
-            var originalanswer = answer;
+            //var originalanswer = answer;
 
             // use double qoute " in xpath unless the answer line contain  doublequotes in the answer  
             string xPath = "//span[contains(text(), \"" + answer + "\") and contains(@class, 'unselectedAnswer')] ";
@@ -630,7 +605,7 @@ namespace HTO
         {
             // use a regular expression to find the full question ID. ie
             // static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase)
-            MatchCollection matches = ReFindQuestionID.Matches(PageHTML);
+            MatchCollection matches = ReFindQuestionId.Matches(PageHTML);
 
 
             String match1 = string.Empty;
@@ -1274,8 +1249,6 @@ namespace HTO
 
     }
 
-
-
     public static class PracticeExamButtons
     {
         private const string simulatedExam = "simulatedExamRadioButton";
@@ -1398,6 +1371,22 @@ namespace HTO
             }
         }
 
+
+    }
+
+
+    public class AllOfficialQuestionsText
+    {
+        public AllOfficialQuestionsText(string techFilePath, string generalFilePath, string extraFilePath)
+        {
+            Tech = File.ReadAllText(techFilePath);
+            General = File.ReadAllText(generalFilePath); 
+            Extra = File.ReadAllText(extraFilePath);
+        }
+
+        public string Tech { get; }
+        public string General { get; } 
+        public string Extra { get; }
 
     }
 
