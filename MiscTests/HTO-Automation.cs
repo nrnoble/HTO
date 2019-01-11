@@ -38,9 +38,7 @@ namespace HTO
 
         static AllOfficialQuestionsText QuestionPool = new AllOfficialQuestionsText(TechQuestionPath, GeneralQuestionPath, ExtraQuestionPath);
         static string _selectedQuestionPool = string.Empty;
-        //static readonly string TechQuestions = File.ReadAllText(@".\TechPool.txt");
-        //static readonly string GeneralQuestions = File.ReadAllText(@".\GeneralPool.txt");
-        //static readonly string ExtraQuestions = File.ReadAllText(@".\ExtraPool.txt");
+
         
 
         private static HamQuestion hq;
@@ -233,141 +231,7 @@ namespace HTO
             }
         }
 
-        public static string GetCurrentQuestionText(string html)
-        {
-            String longQid = getQuestionID(html);
-           
-            return string.Empty;
-        }
 
-
-
-        public static string GetCorrectAnswerText(string html)
-        {
-            //TODO: This function should be broken down into several smaller functions.
-
-
-
-            // string html = (string)driver.ExecuteScript("return document.documentElement.outerHTML");
-            String longQid = getQuestionID(html);
-            Console.WriteLine("longID Found: " + longQid);
-            if (longQid == string.Empty)
-            {
-                Console.WriteLine("longID not Found: " + longQid);
-                return string.Empty;
-            }
-
-
-
-            string questionYear = getQuestionYear(longQid);
-            if (questionYear == string.Empty)
-            {
-                // if Year is empty this get executed something signficantly has gone wrong.
-
-                Console.WriteLine("No valid year found. Exiting application");
-                Application.Exit();
-            }
-
-            {
-                // this section selects the active question pool based on 'year' fount in the questionID
-
-                if (questionYear == "2018")
-                {
-                    //_selectedQuestionPool = TechQuestions;
-                    _selectedQuestionPool = QuestionPool.Tech;
-                    Console.WriteLine("Year: " + questionYear + ". Setting to Tech pool questions");
-                }
-                else if (questionYear == "2015")
-                {
-                   // _selectedQuestionPool = GeneralQuestions;
-                    _selectedQuestionPool = QuestionPool.General;
-                    Console.WriteLine("Year: " + questionYear + ". Setting to General pool questions");
-                }
-                else if (questionYear == "2016")
-                {
-                   // _selectedQuestionPool = ExtraQuestions;
-                    _selectedQuestionPool = QuestionPool.Extra;
-                    Console.WriteLine("Year: " + questionYear + ". Setting to Extra pool questions");
-                }
-                else
-                {
-                    MessageBox.Show("The current year is invalid: " + questionYear + ".  Exit app here.");
-                    Application.Exit();
-                }
-            }
-
-
-            // Get the question question ID that will match the official ID in the question pool.
-            string Qid = getOfficalQid(longQid);
-            Console.WriteLine("QID: " + Qid);
-            //string RxFindStr = Qid + @"\(.\).+?~~";
-            string RxFindStr = Qid + @".+?\(.+?~~";
-            //Console.WriteLine(RxFindStr);
-            Regex RxfindQuestionInPool = new Regex(RxFindStr, RegexOptions.Singleline);
-
-            // Location all Question IDs 
-            MatchCollection matches = RxfindQuestionInPool.Matches(_selectedQuestionPool);
-
-            String questionFullText = string.Empty;
-            if (matches.Count == 0)
-            {
-                // TODO: Search for OK button, and click it then restart answering question.
-                //       If no OK button, then select skip button.
-                //       if no skip button, the hault execution.
-                MessageBox.Show("Match count is zero for finding '" + Qid + "' in the question pool");
-                return string.Empty;
-                // Application.Exit();
-            }
-
-            if (matches.Count == 1)
-            {
-                questionFullText = matches[0].Value.ToString();
-                Console.WriteLine(questionFullText);
-            }
-
-            if (matches.Count == 2)
-            {
-                questionFullText = matches[1].Value.ToString();
-                Console.WriteLine(questionFullText);
-            }
-
-            if (matches.Count > 2)
-            {
-                return string.Empty;
-                // MessageBox.Show("There are 3 or more matches found, there should be no more than 2. Exit here");
-                // Application.Exit();
-            }
-
-
-            string answerLetter = Regex.Match(questionFullText, @"\(([^)]*)\)").Groups[1].Value;
-            Console.WriteLine("Going to select answer: " + answerLetter);
-
-            // Strip off the Alpha Option (A,B,C,D) from line
-            string answerLine = Regex.Match(questionFullText, answerLetter + @"\.(.+)").Groups[1].Value.Trim();
-            Console.WriteLine("Correct answer: " + answerLine);
-
-            return answerLine;
-
-            // This section locates the HTML element that is the correct answer
-            // and then sends a 'click" message.
-            //{
-            //    var answerElement = getAnswerElement(answerLine);
-            //    if (answerElement != null)
-            //    {
-            //        // Click on correct answer
-            //        answerElement.Click();
-            //    }
-            //    else
-            //    {
-            //        // If correct answer can not be found, then click on skipbutton.
-            //        Console.WriteLine("Skipping question: " + Qid);
-            //        questionSkippedCount++;
-            //        ClickOnSkipButton();
-            //        // TODO: check for skip button
-            //        // If skip button does not exist, then look for OK button and click.
-            //    }
-            //}
-        }
 
 
         public static void DoPracticeExam(Exam exam)
@@ -593,76 +457,7 @@ namespace HTO
 
         }
 
-
-        /// <summary>
-        /// this helper function will search HTO's HTML looking for the Question ID
-        /// returns the question ID of the active question.
-        /// If no ID is found, an empty string is returned.
-        /// </summary>
-        /// <param name="PageHTML"></param>
-        /// <returns></returns>
-        public static String getQuestionID(String PageHTML)
-        {
-            // use a regular expression to find the full question ID. ie
-            // static Regex ReFindQuestionID = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase)
-            MatchCollection matches = ReFindQuestionId.Matches(PageHTML);
-
-
-            String match1 = string.Empty;
-            String match2 = string.Empty;
-            String QID = String.Empty;
-
-            if (matches.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            var m1 = matches[0];
-            match1 = m1.Value;
-            QID = match1;
-
-            if (matches.Count > 1)
-            {
-                var m2 = matches[1];
-                match2 = m2.Value;
-                QID = match2;
-            }
-            QID = QID.Replace('[', ' ');
-            QID = QID.Replace(']', ' ');
-            QID = QID.Trim();
-
-            return QID;
-
-        }
-
-
-        /// <summary>
-        /// Helper function to get year from question ID
-        /// </summary>
-        /// <param name="LongQid">LongQid</param>
-        /// <returns></returns>
-        public static String getQuestionYear(String LongQid)
-        {
-            string year = String.Empty;
-            year = LongQid.Substring(0, 4);
-            return year;
-        }
-
-
-        /// <summary>
-        /// Helper function that gets the official Question ID that matches
-        /// the ID found in the question pool text files
-        /// </summary>
-        /// <param name="LongQid"></param>
-        /// <returns></returns>
-        public static string getOfficalQid(String LongQid)
-        {
-            String officialQid = String.Empty;
-            officialQid = LongQid.Substring(5, 5);
-            return officialQid;
-        }
-
-
+       
 
         //TODO: Replace this with just ClickOnButton
         public static bool ClickOnSkipButton()

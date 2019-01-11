@@ -10,7 +10,10 @@ namespace HTO
 
             try
             {
-                string currentAnswer = GetCorrectAnswerText(driver.PageSource);
+                //string currentAnswer = GetCorrectAnswerText(driver.PageSource);
+                hq = new HamQuestion(driver.PageSource, HTOAuto.QuestionPool);
+                string currentAnswer = hq.Answer;
+
                 if (currentAnswer != string.Empty)
                 {
                     MessageBox.Show(currentAnswer);
