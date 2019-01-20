@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -33,11 +34,6 @@ namespace HTO
         {
             this._pageHTML = pageHtml;
             this._questionsPools = questionsPools;
-
-            //this._qId = this.getLongQuestionID();
-            //this._year = this.getQuestionYear();
-            //this._activeQuestionPool = SetActiveQuestionPool();
-
         }
 
      
@@ -70,7 +66,7 @@ namespace HTO
 
         }
 
-        private string QID
+        public string HamQuestionID
         {
             get
             {
@@ -114,7 +110,17 @@ namespace HTO
         }
 
 
-        public string Question { get;}
+        public string Question
+        {
+            get
+            {
+                var qText = this.RawQuestionText;
+                var rgMatchLines = new Regex(@"^.*$", RegexOptions.Multiline);
+                //string answerLine = Regex.Match(this.RawQuestionText, this.AnswerLetter + @"\.(.+)").Groups[1].Value.Trim();
+                var results = rgMatchLines.Match(qText);
+                return results.NextMatch().Value;
+            }
+        }
 
         public string Answer
         {
@@ -151,7 +157,10 @@ namespace HTO
             return answerLetter;
         }
 
-        public string QuestionFullText { get;}
+        public string QuestionFullText
+        {
+            get { return RawQuestionText; }
+        }
 
         private string GetRawQestionText()
         {
@@ -159,9 +168,9 @@ namespace HTO
 
             // Get the question question ID that will match the official ID in the question pool.
             //string Qid = this.LongQiD;
-            Console.WriteLine("QID: " + this.QID);
+            Console.WriteLine("HamQuestionID: " + this.HamQuestionID);
             //string RxFindStr = Qid + @"\(.\).+?~~";
-            string rxFindStr = this.QID + @".+?\(.+?~~";
+            string rxFindStr = this.HamQuestionID + @".+?\(.+?~~";
             //Console.WriteLine(RxFindStr);
             Regex rxfindQuestionInPool = new Regex(rxFindStr, RegexOptions.Singleline);
 
@@ -174,7 +183,7 @@ namespace HTO
                 // TODO: Search for OK button, and click it then restart answering question.
                 //       If no OK button, then select skip button.
                 //       if no skip button, the hault execution.
-                MessageBox.Show("Match count is zero for finding '" + this.QID + "' in the question pool");
+                MessageBox.Show("Match count is zero for finding '" + this.HamQuestionID + "' in the question pool");
                 return string.Empty;
                 // Application.Exit();
             }

@@ -158,12 +158,19 @@ namespace HTO
 
         private void LoginBtn_Click(object sender, EventArgs e)
         {
-          
+           
+            Console.WriteLine("Name: " + this.Name);
+            Console.WriteLine("X: " + this.Location.X);
+            Console.WriteLine("Y: " + this.Location.Y);
+            var pt = new Point(2000,0);
+            this.Location = pt;
+            this.Refresh();
+           
             stopButton.Enabled = true;
             ButtonState(false);
             
             HTOAuto.StartAutomation();
-           
+            
             ButtonState(true);
             stopButton.Enabled = false;
             techPool.Enabled = true;
@@ -185,6 +192,22 @@ namespace HTO
         private void ShowAnswer_Click(object sender, EventArgs e)
         {
             HTO.HTOAuto.ShowCurrentQuestion();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            HTO.HTOAuto.ResearchQuestion();
+        }
+
+        private void BtnTest_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("Name: " + this.Name);
+            Console.WriteLine("X: " + this.Location.X);
+            Console.WriteLine("Y: " + this.Location.Y);
+            var pt = new Point(2000, 0);
+            this.Location = pt;
+            this.Refresh();
+            HTOAuto.LoginTest();
         }
     }
 }

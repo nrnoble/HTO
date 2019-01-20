@@ -48,6 +48,8 @@
             this.extraPool = new System.Windows.Forms.RadioButton();
             this.LoginTip = new System.Windows.Forms.ToolTip(this.components);
             this.ShowAnswer = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.BtnTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // userID
@@ -91,7 +93,7 @@
             this.studyButton.Enabled = false;
             this.studyButton.Location = new System.Drawing.Point(12, 125);
             this.studyButton.Name = "studyButton";
-            this.studyButton.Size = new System.Drawing.Size(96, 23);
+            this.studyButton.Size = new System.Drawing.Size(107, 23);
             this.studyButton.TabIndex = 5;
             this.studyButton.Text = "Auto Study";
             this.LoginTip.SetToolTip(this.studyButton, "Answer a series of study questions back to back");
@@ -101,7 +103,7 @@
             // stopButton
             // 
             this.stopButton.Enabled = false;
-            this.stopButton.Location = new System.Drawing.Point(12, 183);
+            this.stopButton.Location = new System.Drawing.Point(299, 244);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(96, 23);
             this.stopButton.TabIndex = 6;
@@ -152,7 +154,7 @@
             this.answerButton.Enabled = false;
             this.answerButton.Location = new System.Drawing.Point(12, 94);
             this.answerButton.Name = "answerButton";
-            this.answerButton.Size = new System.Drawing.Size(96, 23);
+            this.answerButton.Size = new System.Drawing.Size(107, 23);
             this.answerButton.TabIndex = 11;
             this.answerButton.Text = "Single Answer";
             this.LoginTip.SetToolTip(this.answerButton, "Answer the current question. Question must be currently be visible on page prior " +
@@ -163,20 +165,20 @@
             // Testbtn
             // 
             this.Testbtn.Enabled = false;
-            this.Testbtn.Location = new System.Drawing.Point(12, 154);
+            this.Testbtn.Location = new System.Drawing.Point(13, 244);
             this.Testbtn.Name = "Testbtn";
-            this.Testbtn.Size = new System.Drawing.Size(96, 23);
+            this.Testbtn.Size = new System.Drawing.Size(106, 23);
             this.Testbtn.TabIndex = 12;
-            this.Testbtn.Text = "Test Buttons";
+            this.Testbtn.Text = "Test Menu Buttons";
             this.Testbtn.UseVisualStyleBackColor = true;
             this.Testbtn.Click += new System.EventHandler(this.Testbtn_Click);
             // 
             // PracticeExamBtn
             // 
             this.PracticeExamBtn.Enabled = false;
-            this.PracticeExamBtn.Location = new System.Drawing.Point(12, 65);
+            this.PracticeExamBtn.Location = new System.Drawing.Point(13, 65);
             this.PracticeExamBtn.Name = "PracticeExamBtn";
-            this.PracticeExamBtn.Size = new System.Drawing.Size(96, 23);
+            this.PracticeExamBtn.Size = new System.Drawing.Size(106, 23);
             this.PracticeExamBtn.TabIndex = 13;
             this.PracticeExamBtn.Text = "Practice Exam";
             this.LoginTip.SetToolTip(this.PracticeExamBtn, "Run a full practice exam of the currently selected Exam (Tech, General, Extra).");
@@ -187,7 +189,7 @@
             // 
             this.LoginBtn.Location = new System.Drawing.Point(12, 12);
             this.LoginBtn.Name = "LoginBtn";
-            this.LoginBtn.Size = new System.Drawing.Size(96, 23);
+            this.LoginBtn.Size = new System.Drawing.Size(107, 23);
             this.LoginBtn.TabIndex = 14;
             this.LoginBtn.Text = "Login";
             this.LoginTip.SetToolTip(this.LoginBtn, "Will launch the Chrome Browser and login");
@@ -238,13 +240,34 @@
             // 
             // ShowAnswer
             // 
-            this.ShowAnswer.Location = new System.Drawing.Point(13, 213);
+            this.ShowAnswer.Location = new System.Drawing.Point(12, 155);
             this.ShowAnswer.Name = "ShowAnswer";
-            this.ShowAnswer.Size = new System.Drawing.Size(95, 23);
+            this.ShowAnswer.Size = new System.Drawing.Size(107, 23);
             this.ShowAnswer.TabIndex = 15;
             this.ShowAnswer.Text = "Show Answer";
             this.ShowAnswer.UseVisualStyleBackColor = true;
             this.ShowAnswer.Click += new System.EventHandler(this.ShowAnswer_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 184);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(107, 23);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Research Answer";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // BtnTest
+            // 
+            this.BtnTest.Location = new System.Drawing.Point(169, 211);
+            this.BtnTest.Name = "BtnTest";
+            this.BtnTest.Size = new System.Drawing.Size(107, 23);
+            this.BtnTest.TabIndex = 17;
+            this.BtnTest.Text = "Test";
+            this.LoginTip.SetToolTip(this.BtnTest, "Will launch the Chrome Browser and login");
+            this.BtnTest.UseVisualStyleBackColor = true;
+            this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
             // MainForm
             // 
@@ -252,6 +275,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(413, 279);
+            this.Controls.Add(this.BtnTest);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.ShowAnswer);
             this.Controls.Add(this.LoginBtn);
             this.Controls.Add(this.PracticeExamBtn);
@@ -270,6 +295,7 @@
             this.Controls.Add(this.password);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.userID);
+            this.Location = new System.Drawing.Point(2000, 500);
             this.MinimumSize = new System.Drawing.Size(393, 278);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -301,5 +327,7 @@
         private System.Windows.Forms.RadioButton extraPool;
         private System.Windows.Forms.ToolTip LoginTip;
         private System.Windows.Forms.Button ShowAnswer;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnTest;
     }
 }

@@ -16,8 +16,9 @@ using System.Threading;
 using System.Runtime.InteropServices;
 using System.CodeDom.Compiler;
 using System.CodeDom;
-
-
+using Keys = OpenQA.Selenium.Keys;
+using Microsoft.VisualBasic;
+using AutoHotkey.Interop;
 
 namespace HTO
 {
@@ -27,10 +28,8 @@ namespace HTO
         static readonly Regex ReFindQuestionId = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         static ChromeDriver driver = null;
         static MainForm mf = null;
-
-        //static int questionSkippedCount = 0;
+        private static HamQuestion hq;
         
-
         const string HtoLoginUrl = "https://www.hamradiolicenseexam.com/login.htm";
         const string TechQuestionPath = @".\TechPool.txt";
         const string GeneralQuestionPath = @".\GeneralPool.txt";
@@ -39,18 +38,12 @@ namespace HTO
         static AllOfficialQuestionsText QuestionPool = new AllOfficialQuestionsText(TechQuestionPath, GeneralQuestionPath, ExtraQuestionPath);
         static string _selectedQuestionPool = string.Empty;
 
-        
-
-        private static HamQuestion hq;
-        
         public enum Exam
         {
             Tech = 218,
             General = 315,
             Extra = 416
         }
-
-        
 
         // display form
         public static void Initialization()
@@ -62,8 +55,6 @@ namespace HTO
         }
 
 
-
-       
         public static void StartAutomation()
         {
 
@@ -99,9 +90,11 @@ namespace HTO
             driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 12);
             driver.Navigate().GoToUrl(loginURL);
 
+            IWebElement body = driver.FindElement(By.TagName("body"));
+            body.SendKeys(OpenQA.Selenium.Keys.Control + 'T');
 
             // Get the elements of the login elements from HTML
-            
+
             OpenQA.Selenium.IWebElement LoginBox = driver.FindElementByName("loginemailaddress");
             OpenQA.Selenium.IWebElement LoginPassword = driver.FindElementByName("loginpassword");
             OpenQA.Selenium.IWebElement LoginButton = driver.FindElementByName(HTOMenuButtons.Login);
@@ -114,7 +107,67 @@ namespace HTO
                 actions.SendKeys(LoginPassword, password);
                 actions.Click(LoginButton);
                 actions.Perform();
+                
             }
+        }
+
+        public static void LoginTest()
+        {
+            
+            var control = Strings.Chr(20);
+            var loginURL = "https://www.google.com";
+
+            // Using the Chrome browser
+            Console.WriteLine("Starting Brower");
+            driver = new ChromeDriver();
+
+            // used for sending clicks and and characters
+            Actions actions = new Actions(driver);
+
+
+            // set driver timeout and launch browser
+
+            Console.WriteLine("Goto: " + loginURL);
+            driver.Manage().Timeouts().ImplicitWait = new TimeSpan(0, 0, 12);
+            driver.Navigate().GoToUrl(loginURL);
+
+            IWebElement body = driver.FindElement(By.Name("q"));
+            body.SendKeys("HAM T8B06" + Keys.Enter);
+
+            // IWebElement body2 = driver.FindElement(By.Name("q"));
+            // body2.SendKeys(control.ToString() + 't');
+           // driver.Action.key_down(:control)
+           //     .Send_keys("a")
+           //     .Key_up(:control)
+           //     .perform
+
+           var actionX = new Actions(driver).KeyDown(Keys.LeftControl).SendKeys("T").KeyUp(Keys.LeftControl).Build();
+           actionX.Perform();
+           var ahk = AutoHotkeyEngine.Instance;
+
+           ahk.ExecRaw("Send, ^u");
+           ahk.ExecRaw("Send, `t`t`t`t`t`t`t");
+           ahk.ExecRaw("MsgBox, Hello World!");
+           
+
+            // Get the elements of the login elements from HTML
+
+            //OpenQA.Selenium.IWebElement LoginBox = driver.FindElementByName("loginemailaddress");
+            //OpenQA.Selenium.IWebElement LoginPassword = driver.FindElementByName("loginpassword");
+            //OpenQA.Selenium.IWebElement LoginButton = driver.FindElementByName(HTOMenuButtons.Login);
+
+
+            ////Execute auto login
+            //{
+            //    Console.WriteLine("logging onto HTO as " + userEmail);
+            //    actions.SendKeys(LoginBox, userEmail);
+            //    actions.SendKeys(LoginPassword, password);
+            //    actions.Click(LoginButton);
+            //    actions.Perform();
+
+            //}
+
+            Console.WriteLine("Test Done");
         }
 
 
@@ -230,9 +283,7 @@ namespace HTO
                 }
             }
         }
-
-
-
+        
 
         public static void DoPracticeExam(Exam exam)
         {
@@ -390,6 +441,7 @@ namespace HTO
             //string answer = GetCorrectAnswerText(html);
 
             hq = new HamQuestion(driver.PageSource, QuestionPool);
+            Console.WriteLine("Question: " + hq.Question);
 
             string answer = hq.Answer;
 
@@ -498,9 +550,7 @@ namespace HTO
             return true;
         }
 
-
-
-
+       
         public static bool clickOnElement(string NameOfHTMLItem)
         {
             OpenQA.Selenium.IWebElement element = null;
@@ -919,6 +969,7 @@ namespace HTO
 
     }
 
+
     public static class ButtonTemplate
     {
         private const string a = "";
@@ -1043,6 +1094,7 @@ namespace HTO
 
 
     }
+
 
     public static class PracticeExamButtons
     {
