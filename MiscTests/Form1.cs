@@ -209,5 +209,23 @@ namespace HTO
             this.Refresh();
             HTOAuto.LoginTest();
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked == true)
+            {
+                textBox1.Enabled = true;
+            }
+            else
+            {
+                textBox1.Enabled = false;
+            }
+
+        }
     }
 }

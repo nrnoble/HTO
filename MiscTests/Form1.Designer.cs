@@ -47,9 +47,11 @@
             this.generalPoool = new System.Windows.Forms.RadioButton();
             this.extraPool = new System.Windows.Forms.RadioButton();
             this.LoginTip = new System.Windows.Forms.ToolTip(this.components);
+            this.BtnTest = new System.Windows.Forms.Button();
             this.ShowAnswer = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.BtnTest = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // userID
@@ -238,6 +240,19 @@
             // 
             this.LoginTip.ToolTipTitle = "Login";
             // 
+            // BtnTest
+            // 
+            this.BtnTest.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.BtnTest.Location = new System.Drawing.Point(288, 215);
+            this.BtnTest.Name = "BtnTest";
+            this.BtnTest.Size = new System.Drawing.Size(107, 23);
+            this.BtnTest.TabIndex = 17;
+            this.BtnTest.Text = "Test";
+            this.LoginTip.SetToolTip(this.BtnTest, "Will launch the Chrome Browser and login");
+            this.BtnTest.UseVisualStyleBackColor = true;
+            this.BtnTest.Visible = false;
+            this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
+            // 
             // ShowAnswer
             // 
             this.ShowAnswer.Location = new System.Drawing.Point(12, 155);
@@ -258,16 +273,25 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // BtnTest
+            // textBox1
             // 
-            this.BtnTest.Location = new System.Drawing.Point(169, 211);
-            this.BtnTest.Name = "BtnTest";
-            this.BtnTest.Size = new System.Drawing.Size(107, 23);
-            this.BtnTest.TabIndex = 17;
-            this.BtnTest.Text = "Test";
-            this.LoginTip.SetToolTip(this.BtnTest, "Will launch the Chrome Browser and login");
-            this.BtnTest.UseVisualStyleBackColor = true;
-            this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
+            this.textBox1.Location = new System.Drawing.Point(154, 207);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 18;
+            this.textBox1.Text = "5";
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(156, 184);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(51, 17);
+            this.checkBox1.TabIndex = 19;
+            this.checkBox1.Text = "delay";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // MainForm
             // 
@@ -275,6 +299,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(413, 279);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.BtnTest);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ShowAnswer);
@@ -329,5 +355,7 @@
         private System.Windows.Forms.Button ShowAnswer;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button BtnTest;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

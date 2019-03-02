@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Interactions;
@@ -27,6 +28,7 @@ namespace HTO
     {
         static readonly Regex ReFindQuestionId = new Regex(@"\[....-.....\]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         static ChromeDriver driver = null;
+        //static FirefoxDriver driver = null;
         static MainForm mf = null;
         private static HamQuestion hq;
         
@@ -61,6 +63,7 @@ namespace HTO
             // Using the Chrome browser
             Console.WriteLine("Starting Brower");
             driver = new ChromeDriver();
+            //driver = new FirefoxDriver();
             
             // get User & Pwd from Main form and login into HTO
             var user = mf.userID.Text.Trim();
@@ -120,6 +123,8 @@ namespace HTO
             // Using the Chrome browser
             Console.WriteLine("Starting Brower");
             driver = new ChromeDriver();
+            //driver = new FirefoxDriver();
+            
 
             // used for sending clicks and and characters
             Actions actions = new Actions(driver);

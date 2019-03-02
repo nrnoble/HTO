@@ -103,6 +103,7 @@
   <ItemGroup>
     <Content Include="Resources\chromedriver.exe" />
     <Content Include="Resources\ExtraPool.txt" />
+    <Content Include="Resources\geckodriver.exe" />
     <Content Include="Resources\GeneralPool.txt" />
     <Content Include="Resources\TechPool.txt" />
     <Content Include="Resources\WebDriver.dll" />
